@@ -1,0 +1,17 @@
+{
+  "name": "backserver",
+  "version": "1.0.0",
+  "description": "테스트 서버",
+  "main": "testserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "woo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.0.2"
+  }
+}
