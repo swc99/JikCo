@@ -2,17 +2,22 @@
  * 작성자 : 성우창
  * 작성일 : 24.01.10
  * 수정 날짜 : 24.01.12
- * JikCo test Server!
+ * JikCo Server!
  */
 const http = require('http');
 const express = require('express');
+
+const path = require('path');
+
 const app = express();
+
 const bodyParser = require('body-parser');
 
 const db = require('./DB/DBconn');
 
 const port = 4000;
 
+app.use(express.static(path.join(__dirname,'reactapp/build/index.html')));
 app.use(bodyParser.json());
 app.set('port',port);
 
@@ -30,6 +35,7 @@ SELECT CATEGORYID3 FROM `USER` WHERE USERID = '1')
 ORDER BY STARTTIME DESC ;
  */
 app.get('/api',(req,res) => {
+    // res.sendFile(path.join(__dirname, '/reactapp/build/index.html'));
     db.query(`
     SELECT title, lectureImage, STARTTIME, LECTUREID
     FROM JikCo.LECTURES
@@ -49,7 +55,6 @@ app.get('/api',(req,res) => {
             if(err){
                 res.send('응답 x');
             }
-            
             var Category = result.map(result => ({
                 categoryName : result.CategoryName,
                 categoryId : result.CategoryID
@@ -57,6 +62,8 @@ app.get('/api',(req,res) => {
             console.log(Category);
 
             const resResult = {
+                Code : "200",
+                Message : "메인 화면 응답 성공",
                 lecturesList : Lectures,
                 categoryList : Category
             }
@@ -78,6 +85,8 @@ app.get('/api/search',(req,res) => {
         }
         res.send(
             {
+                Code : "200",
+                Message : "메인 화면 응답 성공",
                 category : result
             }
         );
@@ -156,6 +165,8 @@ app.post('/api/lectureDetail',(req,res) => {
                 }
 
                 res.json({
+                    Code : 200,
+                    Message : "응답 성공",
                     lectureDetail : lectureDetail,
                     toc : toc,
                     board : board
@@ -176,6 +187,7 @@ app.post('/api/lectureDetail/enrollment',(req,res)=>{
         if(err){
             res.send('오류');
         }else{
+            console.log(result);
             res.send('찜하기 완료');
         }
        
@@ -194,6 +206,7 @@ app.post('/api/lectureDetail/board_upload',(req,res)=>{
         if(err){
             res.send('저장 실패');
         }
+        console.log(result);
         res.send('저장 성공');
     });
 });
@@ -213,6 +226,8 @@ app.post('/api/lecture_Status',(req,res)=>{
                 res.send('강의 로드 실패');
             }
             res.json({
+                Code : 200,
+                Message : "응답 성공",
                 LectureM : lectureM,
                 Lecture : lecture
             });
@@ -233,7 +248,8 @@ app.get('/api/userInfo/user',(req,res)=>{
             res.send('조회 실패');
         }
         console.log(result);
-        res.send('조회 성공');
+        
+        res.send({UserInfo : result});
     });
 });
 //유저 정보 수정
@@ -250,6 +266,7 @@ app.post('/api/userInfo/user_update',(req,res)=>{
         if(err){
             res.send('저장 실패');
         }
+        console.log(result);
         res.send('저장 성공');
     });
 });
@@ -262,7 +279,12 @@ app.get('/api/userInfo/study_lecture',(req,res)=>{
         if(err){
             res.send('조회 실패');
         }
-        res.send('조회 성공');
+        console.log(result);
+        res.send({
+            Code : 200,
+            Message : "응답 성공",
+            Study : result
+        });
     });
 });
 //찜 목록
@@ -275,7 +297,11 @@ app.get('/api/userInfo/nonstudy_lecture',(req,res)=>{
         if(err){
             res.send('조회 실패');
         }
-        res.send('조회 성공');
+        res.send({
+            Code : 200,
+            Message : "응답 성공",
+            nonStudy : result
+        });
     });
 });
 
@@ -283,7 +309,7 @@ app.get('/api/userInfo/nonstudy_lecture',(req,res)=>{
 app.post('/api/payment',(req,res)=>{
     const lectureId = req.body.LectureID;
     const userId = req.body.UserID;
-    const paymentDate = req.body.PaymentDate;
+    // const paymentDate = req.body.PaymentDate;
     const pay = req.body.Pay;
     const address = req.body.Address;
     const name = req.body.Name;
@@ -317,7 +343,11 @@ app.post('/api/userInfo/payment_list',(req,res)=>{
             res.send('결제 내역 조회 실패ㅜㅜ');
         }
         console.log(result);
-        res.send('조회 성공!');
+        res.send({
+            Code : 200,
+            Message : "응답 성공",
+            PaymentList : result
+        });
     });
 });
 
@@ -326,9 +356,7 @@ app.post('/api/userInfo/payment_list',(req,res)=>{
 
 
 app.listen(port, ()=>{
-    console.log('test Server is running...');
+    console.log('JikCo Server is running...');
 });
 
 module.exports = app;
-
-
