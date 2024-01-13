@@ -9,10 +9,10 @@ function App() {
   return (
     <div className='APP'>
       <nav>
-        <Link to="/">Home</Link> | <Link to="/about">Category</Link> | <Link to="/join">회원 가입</Link> | <Link to="/login">로그인</Link>
+        <Link to="/home">Home</Link> | <Link to="/about">Category</Link> | <Link to="/join">회원 가입</Link> | <Link to="/login">로그인</Link>
       </nav>
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/home" element={<Home/>}/>
         <Route path="/about" element={<About/>}/>
         <Route path="/join" element={<Join/>}/>
         <Route path="/login" element={<Login/>}/>
