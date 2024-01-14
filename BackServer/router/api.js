@@ -3,7 +3,7 @@
  * 작성일 : 24.01.12
  * 수정 : 24.01.14
  * endpoint : /api
- * description : code 정리
+ * description : code 정리, bcrypt, Token
  */
 
 const db = require('../DB/DBconn');
@@ -12,8 +12,6 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 
 router.use(bodyParser.json());
-
-
 
 //메인페이지
 /**
