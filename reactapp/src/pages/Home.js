@@ -1,5 +1,12 @@
+/**
+ * 작성자 : 성우창
+ * 작성일 : 24.01.12
+ * 수정 : 24.01.14
+ */
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
     const navigate = useNavigate();
     const [lectrueInfo, setLectureInfo] = useState(null);
@@ -47,7 +54,7 @@ const Home = () => {
                         {lectrueInfo.map((lecture) => (
                             <li key={lecture.id}>
                                 <img src={lecture.lectureImage} />
-                                {lecture.title}
+                                {lecture.title},{lecture.reviewCount},{lecture.reviewScore}
                                 </li>
                         ))}
                     </ul>

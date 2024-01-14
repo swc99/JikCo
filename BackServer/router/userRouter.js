@@ -1,3 +1,11 @@
+/**
+ * 작성자 : 성우창
+ * 작성일 : 24.01.12
+ * 수정 : 24.01.14
+ * endpoint : /api/userInfo
+ * description : 
+ */
+
 const db = require('../DB/DBconn');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
@@ -6,20 +14,29 @@ router.use(bodyParser.json());
 
 //유저 정보 조회
 router.get('/userinfo',(req,res)=>{
-    console.log(req.query);
-    db.query(`
-    SELECT U.*, C1.CATEGORYNAME AS CNAME1, C2.CATEGORYNAME AS CNAME2,C3.CATEGORYNAME AS CNAME3
-    FROM USER U
-    JOIN CATEGORY C1 ON C1.CATEGORYID = U.CATEGORYID1
-    JOIN CATEGORY C2 ON C2.CATEGORYID = U.CATEGORYID2
-    JOIN CATEGORY C3 ON C3.CATEGORYID = U.CATEGORYID3
-    WHERE U.USERID ='${req.query.userId}';`,(err,result)=>{
+    const sql = `SELECT U.*, C1.CATEGORYNAME AS CNAME1, C2.CATEGORYNAME AS CNAME2,C3.CATEGORYNAME AS CNAME3 FROM USER U
+    JOIN CATEGORY C1 ON C1.CATEGORYID = U.CATEGORYID1 JOIN CATEGORY C2 ON C2.CATEGORYID = U.CATEGORYID2
+    JOIN CATEGORY C3 ON C3.CATEGORYID = U.CATEGORYID3 WHERE U.USERID =?;`;
+    const values = [req.query.userId];
+
+    db.query(sql,values,(err,result)=>{
         if(err){
-            res.send('조회 실패');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
         console.log(result);
-        
-        res.send({UserInfo : result});
+        if(result.length === 0){
+            res.json({
+                sueccess : false,
+                message : "유저 정보 조회 실패",
+            });
+        }else{
+            res.json({
+                sueccess : true,
+                message : "유저 정보 조회 성공",
+                UserInfo : result
+            });
+        }
     });
 });
 //유저 정보 수정
@@ -29,47 +46,56 @@ router.post('/user_update',(req,res)=>{
     const categoryId2 = req.body.CategoryID2;
     const categoryId3 = req.body.CategoryID3;
     const userId = req.body.UserID;
-    db.query(`
-    UPDATE USER
-    SET USERNAME = ?,CATEGORYID1 = ?,CATEGORYID2 =?,CATEGORYID3 =?
-    WHERE USERID = ?;`,[userName,categoryId1,categoryId2,categoryId3,userId],(err,result)=>{
+
+    const sql = `UPDATE USER SET USERNAME = ?,CATEGORYID1 = ?,CATEGORYID2 =?,CATEGORYID3 =? WHERE USERID = ?;`;
+    const values = [userName,categoryId1,categoryId2,categoryId3,userId];
+
+    db.query(sql,values,(err,result)=>{
         if(err){
-            res.send('저장 실패');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
         console.log(result);
-        res.send('저장 성공');
+        
+        res.json({
+            success : true,
+            message : "수정 완료"
+        });
     });
 });
 //수강 내역
 router.get('/study_lecture',(req,res)=>{
-    db.query(`
-    SELECT L.TITLE, E.PaymentStatus  FROM LECTURES L 
-    JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
-    WHERE E.USERID = '${req.query.UserID}' AND E.PaymentStatus IS TRUE ;`,(err,result)=>{
+    const sql = `SELECT L.TITLE, E.PaymentStatus  FROM LECTURES L JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
+    WHERE E.USERID = ? AND E.PaymentStatus IS TRUE ;`;
+    const values = [req.query.UserID];
+
+    db.query(sql,values,(err,result)=>{
         if(err){
-            res.send('조회 실패');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
         console.log(result);
-        res.send({
-            Code : 200,
+        res.json({
+            sueccess : true,
             Message : "응답 성공",
-            Study : result
+            study : result
         });
     });
 });
 //찜 목록
 router.get('/nonstudy_lecture',(req,res)=>{
-    db.query(`
-    SELECT L.TITLE,L.LECTUREPAY ,L.BOOK ,L.LECTUREIMAGE ,E.PaymentStatus 
-    FROM LECTURES L 
-    JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
-    WHERE E.USERID = '${req.query.UserID}' AND E.PaymentStatus IS FALSE  ;`,(err,result)=>{
+    const sql = `SELECT L.TITLE,L.LECTUREPAY ,L.BOOK ,L.LECTUREIMAGE ,E.PaymentStatus FROM LECTURES L 
+    JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID WHERE E.USERID = ? AND E.PaymentStatus IS FALSE  ;`;
+    const values = [req.query.UserID];
+
+    db.query(sql,values,(err,result)=>{
         if(err){
-            res.send('조회 실패');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
-        res.send({
-            Code : 200,
-            Message : "응답 성공",
+        res.json({
+            sueccess : true,
+            message : "응답 성공",
             nonStudy : result
         });
     });
@@ -84,40 +110,58 @@ router.post('/payment',(req,res)=>{
     const address = req.body.Address;
     const name = req.body.Name;
     const email = req.body.Email;
-    db.query(`
-    INSERT INTO PAYMENTS (LectureID,USERID,PAYMENTDATE,PAY,ADDRESS,NAME,EMAIL)
-    VALUE (?,?,NOW(),?,?,?,?);`,
-    [lectureId,userId,pay,address,name,email],(err,result)=>{
+
+    const sql = `
+    INSERT INTO PAYMENTS (LectureID,USERID,PAYMENTDATE,PAY,ADDRESS,NAME,EMAIL) VALUE (?,?,NOW(),?,?,?,?);`;
+    const values = [lectureId,userId,pay,address,name,email];
+
+    db.query(sql,values ,(err,result)=>{
         if(err){
-            res.send('실패');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
-        db.query(`
-        UPDATE ENROLLMENTS SET PAYMENTSTATUS = TRUE
-        WHERE USERID = ? AND LECTUREID = ?;`,[userId,lectureId],(err,stupdate)=>{
+        const sql = `UPDATE ENROLLMENTS SET PAYMENTSTATUS = TRUE WHERE USERID = ? AND LECTUREID = ?;`;
+        const values = [userId,lectureId];
+
+        db.query(sql,values,(err,stupdate)=>{
             if(err){
-                res.send('결제 유무확인 불가');
+                console.error(err);
+                return res.status(500).send('Internal Server Error');
             }
-            res.send('구매 성공~')
+            res.json({
+                success: true,
+                message: '구매 성공'
+            })
         });
     });
 });
 //결제 내역
 router.post('/payment_list',(req,res)=>{
     const userId = req.body.UserID;
-    db.query(`
-    SELECT P.PAY, P.PAYMENTDATE , L.TITLE,L.LECTUREPAY ,L.BOOK AS B_PAY,P.BOOK 
-    FROM PAYMENTS P
-    JOIN LECTURES L ON L.LECTUREID = P.LECTUREID
-    WHERE P.USERID = ?;`,[userId],(err,result)=>{
+
+    const sql = `SELECT P.PAY, P.PAYMENTDATE , L.TITLE,L.LECTUREPAY ,L.BOOK AS B_PAY,P.BOOK FROM PAYMENTS P
+    JOIN LECTURES L ON L.LECTUREID = P.LECTUREID WHERE P.USERID = ?;`;
+    const values = [userId];
+
+    db.query(sql,values,(err,result)=>{
         if(err){
-            res.send('결제 내역 조회 실패ㅜㅜ');
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
         }
         console.log(result);
-        res.send({
-            Code : 200,
-            Message : "응답 성공",
-            PaymentList : result
-        });
+        if(result.length === 0){
+            res.send({
+                success : false,
+                message : "응답 실패",
+            });
+        }else{
+            res.send({
+                success : true,
+                message : "응답 성공",
+                paymentList : result
+            });
+        }
+        
     });
 });
 
