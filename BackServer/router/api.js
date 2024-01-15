@@ -1,7 +1,7 @@
 /**
  * 작성자 : 성우창
  * 작성일 : 24.01.12
- * 수정 : 24.01.14
+ * 수정 : 24.01.15
  * endpoint : /api
  * description : code 정리, bcrypt, Token
  */
@@ -10,6 +10,11 @@ const db = require('../DB/DBconn');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const {auth} = require('../middleware/cookieJwtAuth');
+
+dotenv.config();
 
 router.use(bodyParser.json());
 
@@ -28,6 +33,7 @@ ORDER BY STARTTIME DESC ;
  */
 router.get('/',(req,res) => {
     // res.sendFile(path.join(__dirname, '/reactapp/build/index.html'));
+
     const sql = `SELECT *FROM JikCo.LECTURES ORDER BY STARTTIME DESC`;
     db.query(sql,(err, row) => {
         if(err){
@@ -102,8 +108,11 @@ router.get('/search',(req,res) => {
 });
 //로그인
 router.post('/login', (req, res) => {
+    const key = process.env.SECRET_KEY;
+    console.log(key);
     const userEmail = req.body.UserEmail;
     const password = req.body.Password;
+    let token = "";
 
     const sql = `SELECT * FROM USER WHERE USEREMAIL = ?;`;
     const values = [userEmail];
@@ -126,10 +135,22 @@ router.post('/login', (req, res) => {
                 }
                 
                 if (compareResult) {
+                    token = jwt.sign(
+                        {
+                            type: "JWT",
+                            userId: result.UserID
+                        },
+                        key,
+                        {
+                            expiresIn:"1h",
+                            issuer:"토큰발급자"
+                        }
+                    );
                     res.json({
                         success: true,
                         message: '로그인 성공',
-                        userInfo: result
+                        userInfo: result,
+                        token: token
                     });
                 } else {
                     res.json({ success: false });

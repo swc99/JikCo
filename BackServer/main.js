@@ -13,9 +13,11 @@ const user = require('./router/userRouter');
 const lecture = require('./router/lectureRouter');
 const api = require('./router/api')
 const cors = require('cors');
+const dotenv = require('dotenv');
 
 const app = express();
 app.use(cors());
+dotenv.config();
 const port = 4000;
 
 // app.use(express.static(path.join(__dirname,'reactapp/build/index.html')));
