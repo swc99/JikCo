@@ -45,6 +45,7 @@ router.get('/',(req,res) => {
             title: row.Title,
             lectureImage: row.LectureImage,
             startTime: row.StartTime,
+            description: row.Description,
             lectureId: row.LectureID,
             reviewCount: row.reviewcount,
             reviewScore: row.reviewscore
@@ -96,7 +97,8 @@ router.get('/search',(req,res) => {
             });
 
         }else{
-            res.send(
+            console.log(result);
+            res.json(
                 {
                     success : true,
                     Message : "검색 성공",

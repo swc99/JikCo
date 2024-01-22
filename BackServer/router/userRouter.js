@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
 //유저 정보 조회
-router.get('/userinfo',(req,res)=>{
+router.get('/',(req,res)=>{
     const sql = `SELECT U.*, C1.CATEGORYNAME AS CNAME1, C2.CATEGORYNAME AS CNAME2,C3.CATEGORYNAME AS CNAME3 FROM USER U
     JOIN CATEGORY C1 ON C1.CATEGORYID = U.CATEGORYID1 JOIN CATEGORY C2 ON C2.CATEGORYID = U.CATEGORYID2
     JOIN CATEGORY C3 ON C3.CATEGORYID = U.CATEGORYID3 WHERE U.USERID =?;`;
@@ -27,12 +27,12 @@ router.get('/userinfo',(req,res)=>{
         console.log(result);
         if(result.length === 0){
             res.json({
-                sueccess : false,
+                success : false,
                 message : "유저 정보 조회 실패",
             });
         }else{
             res.json({
-                sueccess : true,
+                success : true,
                 message : "유저 정보 조회 성공",
                 UserInfo : result
             });
@@ -65,7 +65,8 @@ router.post('/user_update',(req,res)=>{
 });
 //수강 내역
 router.get('/study_lecture',(req,res)=>{
-    const sql = `SELECT L.TITLE, E.PaymentStatus  FROM LECTURES L JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
+    const sql = `SELECT L.LectureID ,L.TITLE, L.LectureImage , E.PaymentStatus , E.AttendanceRate
+    FROM LECTURES L JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
     WHERE E.USERID = ? AND E.PaymentStatus IS TRUE ;`;
     const values = [req.query.UserID];
 
@@ -76,7 +77,7 @@ router.get('/study_lecture',(req,res)=>{
         }
         console.log(result);
         res.json({
-            sueccess : true,
+            success : true,
             Message : "응답 성공",
             study : result
         });
@@ -84,7 +85,7 @@ router.get('/study_lecture',(req,res)=>{
 });
 //찜 목록
 router.get('/nonstudy_lecture',(req,res)=>{
-    const sql = `SELECT L.TITLE,L.LECTUREPAY ,L.BOOK ,L.LECTUREIMAGE ,E.PaymentStatus FROM LECTURES L 
+    const sql = `SELECT L.LectureID ,L.TITLE,L.LECTUREPAY ,L.BOOK ,L.LECTUREIMAGE ,E.PaymentStatus FROM LECTURES L 
     JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID WHERE E.USERID = ? AND E.PaymentStatus IS FALSE  ;`;
     const values = [req.query.UserID];
 
@@ -94,7 +95,7 @@ router.get('/nonstudy_lecture',(req,res)=>{
             return res.status(500).send('Internal Server Error');
         }
         res.json({
-            sueccess : true,
+            success : true,
             message : "응답 성공",
             nonStudy : result
         });
