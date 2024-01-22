@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
+import Cookies from 'js-cookie'; // js-cookie 라이브러리 사용
+
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const nav = useNavigate();
+
+  const handleLogout = () =>{
+    Cookies.remove('accesstoken');
+    nav('/login');
+  }
 
   const handleSearchSubmit = () => {
     if (!searchTerm) {
@@ -55,8 +62,13 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
+        {Cookies.get('accesstoken') ? 
         <div className="links">
+          <Link className="link" to="#" onClick={handleLogout}>
+            <h6>로그 아웃</h6>
+          </Link>
+        </div> :
+          <div className="links">
           <Link className="link" to="/login">
             <h6>로그인</h6>
           </Link>
@@ -64,6 +76,8 @@ const Navbar = () => {
             <h6>회원가입</h6>
           </Link>
         </div>
+      }
+        
       </div>
     </div>
   );

@@ -15,7 +15,8 @@ const LectureDetail = ()=>{
     const [toc, setToc] = useState([]);
     const [board, setBoard] = useState([]);
     
-    const {selectID} = useParams();
+    const {lectureID} = useParams();
+    console.log(lectureID);
 
     useEffect(() => {
         fetch(`${serverUrl}/lectureDetail`, {
@@ -24,7 +25,7 @@ const LectureDetail = ()=>{
             'Content-Type': 'application/json', // 요청 데이터 타입 설정
           },
           body: JSON.stringify({
-            LectureID : selectID
+            LectureID : lectureID
           }),
         })
           .then((response) => response.json())
@@ -32,7 +33,7 @@ const LectureDetail = ()=>{
             if (data.success) {
               setLectureInfo(data.lectureDetail);
               setToc(data.toc);
-              setBoard(data.board);
+              setBoard(data.board); 
             } else {
               console.error('강의 정보를 가져오는데 실패했습니다.');
             }
@@ -43,21 +44,21 @@ const LectureDetail = ()=>{
       }, []);
       
 
-    // const StarRating = ({ star }) => {
-    //     const renderStars = () => {
-    //       const stars = [];
-    //       for (let i = 1; i <= 5; i++) {
-    //         const starClass = i <= star ? "star-filled" : "star-empty";
-    //         const starCharacter = i <= star ? "★" : "☆";
-    //         stars.push(
-    //           <span key={i} className={`star ${starClass}`}>
-    //             {starCharacter}
-    //           </span>
-    //         );
-    //       }
-    //       return stars;
-    //     };
-    // }
+    const StarRating = ({ star }) => {
+        const renderStars = () => {
+          const stars = [];
+          for (let i = 1; i <= 5; i++) {
+            const starClass = i <= star ? "star-filled" : "star-empty";
+            const starCharacter = i <= star ? "★" : "☆";
+            stars.push(
+              <span key={i} className={`star ${starClass}`}>
+                {starCharacter}
+              </span>
+            );
+          }
+          return stars;
+        };
+    }
     return(
         <div className='app'>
             <div>
@@ -93,7 +94,17 @@ const LectureDetail = ()=>{
                         </div>
                     </div>
                 </div>
-                
+                <div>
+                {board && board.map((boardlist)=>{
+                    return(
+                    <div key={boardlist.ID}>
+                        <p>점수 : <StarRating rating={boardlist.Score} /></p>
+                        <p>익명 : {boardlist.Title}</p>
+                        <p>{boardlist.Content}</p>
+                    </div>
+                    );
+                })}
+                </div>
                 <div>
                     <form  style={{display:'flex', flexDirection:'column'}}>
                         <p>점수</p>
@@ -109,9 +120,9 @@ const LectureDetail = ()=>{
                 
             </div>
             <div className='lectureside' >
-                <p>
-                    강의 제목 , 강의 가격, 교재 유무
-                </p>
+                <p>{lectureInfo.Title}</p> 
+                <p>가격 : {lectureInfo.LecturePay + lectureInfo.Book}</p>
+                <p> 교재 유무 : {lectureInfo.Book ? lectureInfo.Book : '없음'}</p>
                 <button>수강하기</button>
             </div>
         </div>

@@ -148,11 +148,13 @@ router.post('/login', (req, res) => {
                             issuer:"토큰발급자"
                         }
                     );
-                    res.json({
+                    res.cookie("accesstoken",token,{
+                        httpOnly: true,
+                        sameSite: 'lax' // or 'strict' or 'none' with 'secure' if HTTPS
+                    }).status(200).json({
                         success: true,
                         message: '로그인 성공',
                         userInfo: result,
-                        token: token
                     });
                 } else {
                     res.json({ success: false });

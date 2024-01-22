@@ -14,9 +14,16 @@ const lecture = require('./router/lectureRouter');
 const api = require('./router/api')
 const cors = require('cors');
 const dotenv = require('dotenv');
+const cookieparser = require('cookie-parser');
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // 클라이언트의 주소로 변경
+    credentials: true,
+};
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieparser());
 dotenv.config();
 const port = 4000;
 

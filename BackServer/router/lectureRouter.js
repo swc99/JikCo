@@ -14,6 +14,7 @@ router.use(bodyParser.json());
 
 //강의 상세
 router.post('/',(req,res) => {
+    console.log(`${req.body.LectureID},강의 정보 요청`);
     const lectureId = req.body.LectureID;
     const sql = `SELECT L.*,I.* FROM LECTURES L JOIN INSTRUCTOR I ON L.INSTRUCTORID = I.INSTRUCTORID WHERE L.LECTUREID = ?;`;
     const values = [lectureId];
@@ -41,12 +42,15 @@ router.post('/',(req,res) => {
                     console.error(err);
                 return res.status(500).send('Internal Server Error');
                 }
-                if(lectureDetail.length === 0 || toc.length === 0 || board.length === 0){
+                if(lectureDetail.length === 0 && toc.length === 0 && board.length === 0){
+                    console.log('false');
+
                     res.json({
                         success : false,
                         Message : "응답 실패",   
                     });
                 }else{
+                    console.log('true');
                     res.json({
                         success : true,
                         Message : "응답 성공",
