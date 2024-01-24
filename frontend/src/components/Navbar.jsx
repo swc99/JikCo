@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+/**
+ * Author : woo
+ * Date : 24.01.15
+ * Last : 24.01.24
+ * Description : Nav
+ */
+
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
-import Cookies from 'js-cookie'; // js-cookie 라이브러리 사용
+import {AuthContexProvider, AuthContext} from '../context/AuthContext';
+
 
 
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const nav = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const handleLogout = () =>{
-    Cookies.remove('accesstoken');
+    logout();
     nav('/login');
   }
 
@@ -25,6 +35,7 @@ const Navbar = () => {
       handleSearchSubmit();
     }
   };
+  
 
   return (
     <div className="navbar">
@@ -62,10 +73,14 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        {Cookies.get('accesstoken') ? 
+        <div>
+        {currentUser ? 
         <div className="links">
           <Link className="link" to="#" onClick={handleLogout}>
             <h6>로그 아웃</h6>
+          </Link>
+          <Link to='/profile'>
+            {currentUser[0].UserName}
           </Link>
         </div> :
           <div className="links">
@@ -77,6 +92,7 @@ const Navbar = () => {
           </Link>
         </div>
       }
+      </div>
         
       </div>
     </div>

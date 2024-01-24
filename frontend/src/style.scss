@@ -83,6 +83,23 @@ body {
       height: 120vh;
       background-color: $lightGreen;
 
+      .categoryList {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    
+        label {
+            display: flex;
+            align-items: center;
+        }
+    
+        input {
+            margin-right: 5px; /* 체크박스와 텍스트 사이의 간격 조절 */
+        }
+    }
+
       
 
       h1 {

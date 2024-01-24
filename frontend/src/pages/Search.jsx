@@ -1,3 +1,9 @@
+/**
+ * Author : woo
+ * Date : 24.01.15
+ * Last : 24.01.24
+ * Description : Search result
+ */
 import React, { useState, useEffect } from 'react';
 import { useParams,useNavigate } from 'react-router-dom';
 const serverUrl = process.env.REACT_APP_SERVER_URL;

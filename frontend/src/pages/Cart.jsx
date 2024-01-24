@@ -1,20 +1,23 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.18
+ * Last : 24.01.24
  * Description : Lectrue list 
  */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const Cart = () => {
     const [nonStudyLectures, setNonStudyLectures] = useState([]);
     const [selectedCourses, setSelectedCourses] = useState([]);
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {
         // 서버에서 강의 정보를 가져오는 요청
-        fetch(`${serverUrl}/userInfo/nonstudy_lecture?UserID=2`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userInfo/nonstudy_lecture?UserID=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {

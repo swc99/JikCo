@@ -1,20 +1,23 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.17
+ * Last : 24.01.24
  * Description : User Info
  */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import userimg from '../img/edit.png';
+import {AuthContexProvider, AuthContext} from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
+
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useState({});
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {
         // 서버에서 유저 정보를 가져오는 요청
-        fetch(`${serverUrl}/userinfo?userId=1`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userinfo/?userId=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {

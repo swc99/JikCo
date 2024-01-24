@@ -17,6 +17,7 @@
     "nodejs": "^0.0.0",
     "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
+    "react-cookie": "^7.0.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",

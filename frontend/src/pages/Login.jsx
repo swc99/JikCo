@@ -4,39 +4,51 @@
  * Last : 24.01.17
  * Description : Login
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import kakao from '../img/kakao.png';
-import Cookies from 'js-cookie'; // js-cookie 라이브러리 사용
-const serverUrl = process.env.REACT_APP_SERVER_URL;
+import {AuthContext} from '../context/AuthContext';
+import { useCookies } from "react-cookie";
+
 
 const Login = () => {
-    const [userEmail, setEmail] = useState();
-    const [userPassword, setPassword] = useState();
-    const nav = useNavigate();
+    const [inputs, setInputs] = useState({
+        userEmail: "",
+        userPassword: "",
+    });
+    const [cookies, setCookie] = useCookies(['accesstoken']);
+    const [err, setError] = useState(null);
 
-    const handlesubmit=()=>{
-            fetch(`${serverUrl}/login`,{
-                method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // 요청 데이터 타입 설정
-            },
-            credentials: 'include', // withCredentials 설정
-            body: JSON.stringify({
-                UserEmail : userEmail,
-                Password : userPassword
-            }),
-            })
-            .then((response) => response.json())
-            .then((data)=>{
-                if(data.success){
-                   // Cookies.set('accesstoken', data.accesstoken);
-                    nav('/');
-                }else{
-                    console.log('응답 실패');
+    const nav = useNavigate();
+    const { login } = useContext(AuthContext);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await login(inputs);
+            // setCookie('accesstoken', token, { path: '/' });
+            console.log(inputs);
+            nav("/");
+        } catch (err) {
+            // 에러 객체를 확인하여 어떤 속성이 있는지 로그에 출력
+            console.error(err);
+            // err 객체가 response 속성을 가지고 있는지 확인
+            if (err.response) {
+                // response 속성이 있을 경우, data 속성이 있는지 확인
+                if (err.response.data) {
+                    setError(err.response.data);
+                } else {
+                    setError("에러: 응답 데이터 없음");
                 }
-            });
-    }
+            } else {
+                setError("에러: 응답 없음");
+            }
+        }
+    };
+    const handleChange = (e) => {
+        setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
 
     
 
@@ -46,18 +58,18 @@ const Login = () => {
             <p>Login</p>
             <form>
                 <label>ID</label>
-                <input type="text" placeholder='Email' value={userEmail} onChange={(e) => setEmail(e.target.value)} />
+                <input type="text" placeholder='Email' name='userEmail' onChange={handleChange} />
                 <label>Password</label>
-                <input type="password" placeholder='password' value={userPassword} onChange={(e) => setPassword(e.target.value)}/>
-                <button type="button" onClick={handlesubmit}>Login</button>
+                <input type="password" placeholder='password' name='userPassword' onChange={handleChange}/>
+                <button type="button" onClick={handleSubmit}>Login</button>
                 <button style={{ backgroundColor: 'yellow' , color:'black'}}><img className='kakao' src={kakao}/>로그인</button>
                 <p>This is an error!</p>
                 <span> 아직 계정이 없다면?</span>
                 <Link className='link' to={'/register'}>
-                <a class="actionBtn1">
-                    <span class="hover"></span>
+                <button className="actionBtn1">
+                    <span className="hover"></span>
                     <span>회원가입</span>
-                </a>
+                </button>
                 </Link>
                
             </form>

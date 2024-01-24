@@ -1,18 +1,20 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.18
+ * Last : 24.01.24
  * Description : Lectrue History 
  */
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const MyOnline = () => {
     const [studyLecture, setStudyLectures ] = useState([]);
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(()=>{
-        fetch(`${serverUrl}/userInfo/study_lecture?UserID=2`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {

@@ -1,15 +1,17 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.18
+ * Last : 24.01.24
  * Description : Payment List
  */
-import React,{ useState, useEffect} from 'react';
+import React,{ useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const PaymentList = () => {
     const [paymentList, setPaymentList] = useState([]);
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {
         // 서버에서 결제 내역을 가져오는 요청
@@ -19,7 +21,7 @@ const PaymentList = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                UserID: 1, // 실제 사용자 ID를 넣어주세요
+                UserID: `${currentUser[0].UserID}`, // 실제 사용자 ID를 넣어주세요
             }),
         })
             .then((response) => response.json())
