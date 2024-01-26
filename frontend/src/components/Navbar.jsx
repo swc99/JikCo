@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.24
+ * Last : 24.01.26
  * Description : Nav
  */
 
@@ -79,7 +79,7 @@ const Navbar = () => {
           <Link className="link" to="#" onClick={handleLogout}>
             <h6>로그 아웃</h6>
           </Link>
-          <Link to='/profile'>
+          <Link className="link" to='/profile'>
             {currentUser[0].UserName}
           </Link>
         </div> :

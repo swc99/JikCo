@@ -1,11 +1,11 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.24
+ * Last : 24.01.26
  * Description : Lectrue list 
  */
 import React, {useState, useEffect, useContext} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -14,6 +14,7 @@ const Cart = () => {
     const [nonStudyLectures, setNonStudyLectures] = useState([]);
     const [selectedCourses, setSelectedCourses] = useState([]);
     const {currentUser} = useContext(AuthContext);
+    const nav = useNavigate();
 
     useEffect(() => {
         // 서버에서 강의 정보를 가져오는 요청
@@ -47,7 +48,21 @@ const Cart = () => {
     const handlePayment = () => {
         // 서버로 선택한 강의 정보를 전송하는 로직
         console.log('선택한 강의:', selectedCourses);
-        // 여기에서 서버로 선택한 강의 정보를 전송하면 됩니다.
+    
+        // 강의 아이디와 제목이 있는 배열
+        const selectedCoursesInfo = nonStudyLectures
+            .filter(lecture => selectedCourses.includes(lecture.TITLE))
+            .map(lecture => ({
+                LectureID: lecture.LectureID,
+                TITLE: lecture.TITLE,
+                Book: lecture.BOOK,
+                LECTUREIMAGE: lecture.LECTUREIMAGE,
+                LECTUREPAY: lecture.LECTUREPAY
+
+            }));
+    
+        console.log('선택한 강의 정보:', selectedCoursesInfo);
+        nav('/payment',{state : selectedCoursesInfo});
     };
 
 
@@ -68,8 +83,8 @@ const Cart = () => {
                 <div style={{display:'flex',justifyItems:'auto'}}>
                 {nonStudyLectures && nonStudyLectures.map((lecture) => (
                             <div key={lecture.TITLE} style={{ marginLeft: '20px' }}>
-                                <p>강의 이미지</p>
-                                <p>{lecture.TITLE}</p>
+                                <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
+                                <p style={{width:'120px'}}>{lecture.TITLE}</p>
                                 <p>가격: {lecture.LECTUREPAY}</p>
                                 <input
                                     type='checkbox'

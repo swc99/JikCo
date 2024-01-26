@@ -1,11 +1,10 @@
 /**
  * 작성자 : 성우창
  * 작성일 : 24.01.12
- * 수정 : 24.01.15
+ * 수정 : 24.01.26
  * endpoint : /api
  * description : code 정리, bcrypt, Token
  */
-
 const db = require('../DB/DBconn');
 const router = require('express').Router();
 const bodyParser = require('body-parser');
@@ -16,32 +15,11 @@ const {auth} = require('../middleware/cookieJwtAuth');
 const cors = require('cors');
 const cookieparser = require('cookie-parser');
 
-
 dotenv.config();
-
-// const corsOptions = {
-//     origin: 'http://localhost:3000',
-//     credentials: true,
-// };
-
-// router.use(cors(corsOptions));
-// router.use(cookieparser());
 
 router.use(bodyParser.json());
 
 //메인페이지
-/**
- * 로그인이후 메인 페이지
- * -- 추천 강좌
-SELECT TITLE , LECTUREIMAGE , STARTTIME, LECTUREID
-FROM LECTURES
-WHERE CATEGORYID IN (SELECT CATEGORYID1 FROM `USER` WHERE USERID = '1'
-UNION
-SELECT CATEGORYID2 FROM `USER` WHERE USERID = '1'
-UNION
-SELECT CATEGORYID3 FROM `USER` WHERE USERID = '1')
-ORDER BY STARTTIME DESC ;
- */
 router.get('/',(req,res) => {
     const cookies = req.cookies;
     const user = req.query.user;
@@ -353,19 +331,30 @@ router.post('/lecture_Status',(req,res)=>{
                 console.error(err);
                 return res.status(500).send('Internal Server Error');
             }
-            if(lectureM.length === 0 || lecture.length === 0){
-                res.json({
-                    success : false,
-                    Message : "데이터가 없습니다.",
-                });
-            }else{
-                res.json({
-                    success : true,
-                    Message : "응답 성공",
-                    LectureM : lectureM,
-                    Lecture : lecture
-                });
-            }
+            const sql = `SELECT * FROM LECTURETOC WHERE LECTUREID = ?;`
+            const values = [lectureId];
+            db.query(sql, values, (err,toc)=>{
+                if(err){
+                    console.error(err);
+                    return res.status(500).send('Internal Server Error');
+                }
+
+                if(lectureM.length > 0 || lecture.length > 0 || toc.length > 0){
+                    res.json({
+                        success : true,
+                        message : "응답 성공",
+                        LectureM : lectureM,
+                        Lecture : lecture,
+                        Toc : toc
+                    });
+                }else{
+                    res.json({
+                        success : false,
+                        message : "데이터가 없습니다.",
+                    });
+                }
+
+            })
             
         });
     });

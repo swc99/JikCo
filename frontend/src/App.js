@@ -100,7 +100,7 @@ const router = createBrowserRouter([
         element: <Login />
       },
       {
-        path: "/onlinestudy",
+        path: "/onlinestudy/:lectureID",
         element: <OnlineStudy />
       },
     ]

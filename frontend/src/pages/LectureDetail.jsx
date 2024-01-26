@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.24
+ * Last : 24.01.26
  * Description : Lectrue Detail
  */
 import React, { useState, useEffect, useContext } from 'react'
@@ -159,7 +159,7 @@ const LectureDetail = ()=>{
                 <button type='button' onClick={handlesideButtonClick} style={{marginLeft:'850px',height:'10px' , border:'none', backgroundColor:'transparent'}}>찜하기</button>
                 <div className='lectureDetail'>
                     <div className='lectureImage'>
-                        <img style={{width:'auto',height:'500px'}} src={lectureimg}/>
+                        <img style={{width:'auto',height:'500px'}} src={lectureInfo.LectureImage}/>
                     </div>
                     <div className='lectureContent'>
                         <div className='contentinner'>

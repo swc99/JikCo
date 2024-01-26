@@ -1,17 +1,18 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.24
+ * Last : 24.01.26
  * Description : Lectrue History 
  */
 import React,{useState, useEffect, useContext} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const MyOnline = () => {
     const [studyLecture, setStudyLectures ] = useState([]);
     const {currentUser} = useContext(AuthContext);
+    const nav = useNavigate();
 
     useEffect(()=>{
         fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`)
@@ -30,6 +31,15 @@ const MyOnline = () => {
             });
     },[]);
 
+    const handlesubmit = (lecturID) => {
+        console.log('가져올 강의 아이디',lecturID);
+        nav(`/onlinestudy/${lecturID}`);
+    };
+
+    const handleClickReview = (lecturID) => {
+        console.log('리뷰를 작성 하고 싶은 강의 아이디',lecturID);
+        nav(`/lectureDetail/${lecturID}`);
+    };
     return (
         <div className='myinfo' style={{height:'550px'}}>
 
@@ -48,12 +58,12 @@ const MyOnline = () => {
                     
                     {studyLecture.map((lecture) => (
                             <div className='lecturelist' key={lecture.LectureID}>
-                                <p>강의 이미지{lecture.LECTUREIMAGE}</p>
+                                <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
                                 <p>{lecture.TITLE}</p>
                                 <p>{lecture.AttendanceRate}</p>
                                 <div className='keepbtn'>
-                                    <button>이어 보기</button>
-                                    <button>리뷰</button>
+                                    <button onClick={()=>handlesubmit(lecture.LectureID)}>이어 보기</button>
+                                    <button onClick={()=>handleClickReview(lecture.LectureID)}>리뷰</button>
                                 </div>
                             </div>
                         ))}
