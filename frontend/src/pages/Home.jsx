@@ -4,7 +4,6 @@
  * Last : 24.01.24
  * Description : Main Home
  */
-
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import homeimg from '../img/Jikcoimg.jpg';
@@ -24,6 +23,8 @@ const Home = () => {
         nav(`/lectureDetail/${lecturID}`);
     };
 
+    console.log('home ',lecturelistHome);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -38,7 +39,6 @@ const Home = () => {
                 if (data.success && url === `${serverUrl}/`) {
                     setMainHome(data.lecturesList);
                     setCategory(data.categoryList);
-
                     localStorage.setItem('categoryList', JSON.stringify(data.categoryList));
                 } else if(data.success && data.Frlectures != null){
                     setMainHome(data.lecturesList);

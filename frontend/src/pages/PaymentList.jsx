@@ -30,7 +30,8 @@ const PaymentList = () => {
                     console.log(data.paymentList);
                     setPaymentList(data.paymentList);
                 } else {
-                    console.error('결제 내역을 가져오는데 실패했습니다.');
+                    console.log('결제 내역이 없습니다.');
+                    alert('결제 내역이 없습니다.');
                 }
             })
             .catch((error) => {

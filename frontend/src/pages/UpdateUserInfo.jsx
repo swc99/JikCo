@@ -4,29 +4,103 @@
  * Last : 24.01.17
  * Description : Update User Info
  */
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+
 
 
 const UpdateUserInfo = () => {
-    const [userInfo, setUserInfo] = useState({
-        username: 'JohnDoe',
-        phone: '01040872460',
+    const {currentUser} = useContext(AuthContext);
+    const [categorylist, setCategoryList] = useState(
+        JSON.parse(localStorage.getItem("categoryList")) || null
+    );
+    const [inputs, setInputs] = useState({
+        insertName:"",
+        insertPhone: "",
+        selectedCategories:[]
     });
+    const [userInfo, setUserInfo] = useState({
+        username: currentUser[0].UserName,
+        phone: currentUser[0].UserPhone,
+        category1: currentUser[0].CategoryID1,
+        category2: currentUser[0].CategoryID2,
+        category3: currentUser[0].CategoryID3,
+    });
+    const [sendData, setSendData] = useState({
+        UserName: "",
+        UserPhone: "",
+        CategoryID1: "",
+        CategoryID2: "",
+        CategoryID3: "",
+        UserID: "",
+    })
+    const nav = useNavigate();
+    
+
+    const handleCheckboxChange = (categoryId) => {
+        const selectedCategories = [...inputs.selectedCategories];
+
+        if (selectedCategories.includes(categoryId)) {
+            // 이미 선택된 경우, 제거
+            selectedCategories.splice(selectedCategories.indexOf(categoryId), 1);
+        } else {
+            // 선택되지 않은 경우, 추가 (단, 3개 이하일 때)
+            if (selectedCategories.length < 3) {
+                selectedCategories.push(categoryId);
+            }
+        }
+
+        setInputs((prev) => ({ ...prev, selectedCategories }));
+        
+        
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserInfo({
-            ...userInfo,
-            [name]: value,
-        });
+        setInputs((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // 여기에 사용자 정보 업데이트 또는 API 호출 등을 추가하세요
-        console.log('수정된 사용자 정보:', userInfo);
+        if(inputs.insertName === ""){
+            inputs.insertName = userInfo.username;
+        }
+        if(inputs.insertPhone === ""){
+            inputs.insertPhone = userInfo.phone;
+        }
+        console.log('수정된 사용자 정보:', inputs);
+        setSendData((prevData) => ({
+            ...prevData,
+            UserName: inputs.insertName,
+            UserPhone: inputs.insertPhone,
+            CategoryID1 : inputs.selectedCategories[0],
+            CategoryID2 : inputs.selectedCategories[1],
+            CategoryID3 : inputs.selectedCategories[2],
+            UserID: currentUser[0].UserID
+        }));
     };
+
+    useEffect(() => {
+        if (sendData.UserName !== "" || sendData.UserPhone !== "") {
+            console.log('업데이트된 사용자 정보 (sendData):', sendData);
+            sendDataToBackend();
+        }
+    }, [sendData]);
+    
+    const sendDataToBackend = async () =>{
+        const res = await axios.post(`${serverUrl}/userInfo/user_update`,sendData);
+        if(res.data.success){
+            alert('성공적으로 수정을 완료했습니다.')
+            nav('/profile');
+        }else{
+            alert(`정보 수정 실패!!!!\n${res.data.message}`);
+        }
+    }
+
     return (
         <div className='myinfo' style={{height:'550px'}}>
             <div className='infonav'>
@@ -42,20 +116,35 @@ const UpdateUserInfo = () => {
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     <form onSubmit={handleSubmit}>
+                        <div style={{ display:'flex' , flexDirection:"column", margin:'10px'}}>
                         <label>
-                            사용자 이름:
-                            <input type="text" name="username" value={userInfo.username} onChange={handleChange} />
+                        <h3>이름</h3>
+                            <input type="text" name="insertName" placeholder={userInfo.username} onChange={handleChange} />
                         </label>
                         <br />
                         <label>
-                            연락처:
-                            <input type="email" name="email" value={userInfo.phone} onChange={handleChange} />
+                        <h3>연락처</h3>
+                            <input type="text" name="insertPhone" placeholder={userInfo.phone} onChange={handleChange} />
                         </label>
                         <br />
                         <label>
-                            관심 분야:
-                            <input type="email" name="email" value={userInfo.category} onChange={handleChange} />
+                            <h3>관심 분야</h3>
                         </label>
+                        </div>
+                        
+                        
+                        <div className='categoryList'>
+                        {categorylist.map((category) => (
+                            <label key={category.categoryId}>
+                                <input
+                                    type='checkbox'
+                                    checked={inputs.selectedCategories.includes(category.categoryId)}
+                                    onChange={() => handleCheckboxChange(category.categoryId)}
+                                />
+                                {category.categoryName}
+                            </label>
+                        ))}
+                        </div>
                         <br />
                         <button type="submit">정보 수정</button>
                     </form>

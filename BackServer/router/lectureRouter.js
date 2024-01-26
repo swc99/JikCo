@@ -50,11 +50,10 @@ router.post('/',(req,res) => {
                         Message : "응답 실패",   
                     });
                 }else{
-                    console.log('true');
                     res.json({
                         success : true,
                         Message : "응답 성공",
-                        lectureDetail : lectureDetail,
+                        lectureDetail : lectureDetail[0],
                         toc : toc,
                         board : board
                     });
@@ -64,25 +63,44 @@ router.post('/',(req,res) => {
     });
 });
 //찜 or 수강하기
-router.post('/enrollment',(req,res)=>{
+router.post('/enrollment', (req, res) => {
     const lectureId = req.body.LectureID;
     const userId = req.body.UserID;
-    console.log(lectureId,userId);
+    console.log(lectureId, userId);
+    
+    // SELECT 쿼리로 이미 데이터가 있는지 확인
+    const selectSql = `SELECT * FROM ENROLLMENTS WHERE USERID = ? AND LECTUREID = ?;`
+    const selectValues = [userId, lectureId];
 
-    const sql = `INSERT INTO ENROLLMENTS (LectureID,UserID) VALUE (?,?)`;
-    const values = [lectureId,userId];
-
-    db.query(sql,values,(err,result)=>{
-        if(err){
-            console.error(err);
+    db.query(selectSql, selectValues, (selectErr, selectResult) => {
+        if (selectErr) {
+            console.error(selectErr);
             return res.status(500).send('Internal Server Error');
         }
-        res.json({
-            success : true,
-            message : '저장 성공'
-        });
+        if (selectResult.length > 0) {
+            return res.json({
+                success: false,
+                message: '이미 데이터가 있습니다.'
+            });
+        }else{
+            const insertSql = `INSERT INTO ENROLLMENTS (LectureID, UserID) VALUES (?, ?);`;
+            const insertValues = [lectureId, userId];
+
+            db.query(insertSql, insertValues, (insertErr, insertResult) => {
+                if (insertErr) {
+                    console.error(insertErr);
+                    return res.status(500).send('Internal Server Error');
+                }
+                return res.json({
+                    success: true,
+                    message: '저장 성공'
+                });
+            });
+        }
+        
     });
 });
+
 //강의 리뷰 작성
 router.post('/board_upload',(req,res)=>{
     const lectureId = req.body.LectureID;

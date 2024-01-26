@@ -42,13 +42,14 @@ router.get('/',(req,res)=>{
 //유저 정보 수정
 router.post('/user_update',(req,res)=>{
     const userName = req.body.UserName;
+    const userPhone = req.body.UserPhone;
     const categoryId1 = req.body.CategoryID1;
     const categoryId2 = req.body.CategoryID2;
     const categoryId3 = req.body.CategoryID3;
     const userId = req.body.UserID;
 
-    const sql = `UPDATE USER SET USERNAME = ?,CATEGORYID1 = ?,CATEGORYID2 =?,CATEGORYID3 =? WHERE USERID = ?;`;
-    const values = [userName,categoryId1,categoryId2,categoryId3,userId];
+    const sql = `UPDATE USER SET USERNAME = ?,UserPhone = ?,CATEGORYID1 = ?,CATEGORYID2 =?,CATEGORYID3 =? WHERE USERID = ?;`;
+    const values = [userName,userPhone,categoryId1,categoryId2,categoryId3,userId];
 
     db.query(sql,values,(err,result)=>{
         if(err){
@@ -56,11 +57,17 @@ router.post('/user_update',(req,res)=>{
             return res.status(500).send('Internal Server Error');
         }
         console.log(result);
-        
-        res.json({
-            success : true,
-            message : "수정 완료"
-        });
+        if (result.affectedRows > 0) {
+            res.json({
+                success: true,
+                message: "수정 완료"
+            });
+        } else {
+            res.json({
+                success: false,
+                message: "해당 사용자를 찾을 수 없습니다."
+            });
+        }
     });
 });
 //수강 내역
@@ -69,18 +76,26 @@ router.get('/study_lecture',(req,res)=>{
     FROM LECTURES L JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID 
     WHERE E.USERID = ? AND E.PaymentStatus IS TRUE ;`;
     const values = [req.query.UserID];
+    console.log(values);
 
     db.query(sql,values,(err,result)=>{
         if(err){
             console.error(err);
             return res.status(500).send('Internal Server Error');
         }
-        console.log(result);
-        res.json({
-            success : true,
-            Message : "응답 성공",
-            study : result
-        });
+        if(result.length > 0){
+            res.json({
+                success : true,
+                message : "응답 성공",
+                study : result
+            });
+            
+        }else{
+            res.json({
+                success: false,
+                message: '데이터가 없습니다'
+            })
+        }
     });
 });
 //찜 목록
@@ -88,17 +103,26 @@ router.get('/nonstudy_lecture',(req,res)=>{
     const sql = `SELECT L.LectureID ,L.TITLE,L.LECTUREPAY ,L.BOOK ,L.LECTUREIMAGE ,E.PaymentStatus FROM LECTURES L 
     JOIN ENROLLMENTS E ON L.LECTUREID = E.LECTUREID WHERE E.USERID = ? AND E.PaymentStatus IS FALSE  ;`;
     const values = [req.query.UserID];
+    console.log(values);
+
 
     db.query(sql,values,(err,result)=>{
         if(err){
             console.error(err);
             return res.status(500).send('Internal Server Error');
         }
-        res.json({
-            success : true,
-            message : "응답 성공",
-            nonStudy : result
-        });
+        if(result.length === 0){
+            res.json({
+                success: false,
+                message: '데이터가 없습니다'
+            })
+        }else{
+            res.json({
+                success : true,
+                message : "응답 성공",
+                nonStudy : result
+            });
+        }
     });
 });
 

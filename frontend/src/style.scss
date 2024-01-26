@@ -44,6 +44,13 @@ body {
         margin-left: 3%;
         width: 850px;
         background-color:$lightGreen;
+
+        .categoryList{
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          margin: 10px;
+        }
+
         .userinfo{
           display: flex;
           flex-direction: row;

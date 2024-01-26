@@ -17,7 +17,7 @@ const Profile = () => {
 
     useEffect(() => {
         // 서버에서 유저 정보를 가져오는 요청
-        fetch(`${serverUrl}/userinfo/?userId=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userInfo/?userId=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {

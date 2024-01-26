@@ -14,14 +14,15 @@ const MyOnline = () => {
     const {currentUser} = useContext(AuthContext);
 
     useEffect(()=>{
-        fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    console.log(data.study);
+                    console.log(data.message);
                     setStudyLectures(data.study);
                 } else {
-                    console.error('강의 정보를 가져오는데 실패했습니다.');
+                    console.log(data.message);
+                    alert('수강중인 강의가 없습니다.');
                 }
             })
             .catch((error) => {

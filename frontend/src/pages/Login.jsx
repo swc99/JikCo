@@ -49,9 +49,6 @@ const Login = () => {
     const handleChange = (e) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
-
-    
-
     
     return (
         <div className='auth'>
@@ -61,7 +58,7 @@ const Login = () => {
                 <input type="text" placeholder='Email' name='userEmail' onChange={handleChange} />
                 <label>Password</label>
                 <input type="password" placeholder='password' name='userPassword' onChange={handleChange}/>
-                <button type="button" onClick={handleSubmit}>Login</button>
+                <button type="button" onClick={handleSubmit} >Login</button>
                 <button style={{ backgroundColor: 'yellow' , color:'black'}}><img className='kakao' src={kakao}/>로그인</button>
                 <p>This is an error!</p>
                 <span> 아직 계정이 없다면?</span>

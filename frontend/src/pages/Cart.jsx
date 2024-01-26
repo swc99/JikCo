@@ -25,6 +25,7 @@ const Cart = () => {
                     setNonStudyLectures(data.nonStudy);
                 } else {
                     console.error('강의 정보를 가져오는데 실패했습니다.');
+                    alert('찜 목록이 비어있습니다.')
                 }
             })
             .catch((error) => {
@@ -33,10 +34,14 @@ const Cart = () => {
     }, []);
 
     // 선택한 강의의 총 합계 금액 계산
-    const totalAmount = nonStudyLectures.reduce(
-        (total, lecture) => (selectedCourses.includes(lecture.TITLE) ? total + lecture.LECTUREPAY : total),
-        0
-    );
+    const totalAmount = nonStudyLectures && nonStudyLectures.length > 0
+    ? nonStudyLectures.reduce(
+          (total, lecture) => (selectedCourses.includes(lecture.TITLE) ? total + lecture.LECTUREPAY : total),
+          0
+      )
+    : 0;
+   
+    
 
     // 선택한 강의 정보를 서버로 전송하는 함수
     const handlePayment = () => {
@@ -61,7 +66,7 @@ const Cart = () => {
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                 <div style={{display:'flex',justifyItems:'auto'}}>
-                {nonStudyLectures.map((lecture) => (
+                {nonStudyLectures && nonStudyLectures.map((lecture) => (
                             <div key={lecture.TITLE} style={{ marginLeft: '20px' }}>
                                 <p>강의 이미지</p>
                                 <p>{lecture.TITLE}</p>
