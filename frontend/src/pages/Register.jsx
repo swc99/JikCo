@@ -66,7 +66,7 @@ const Register = () => {
     };
     const handleRegistration = () => {
         console.log('가입 요청');
-        sendDataToServer(registerdata)
+        sendDataToServer(registerdata);
     };
 
     const sendDataToServer = async (data) => {
@@ -76,10 +76,12 @@ const Register = () => {
           if(res.data.success){
             console.log('가입 성공');
             nav('/login');
+          }else{
+            alert(`${res.data.message}`);
           }
           
         } catch (error) {
-          console.error('Error sending data to server:', error);
+          console.error('Error :', error);
         }
       };
 

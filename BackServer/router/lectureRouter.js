@@ -91,10 +91,18 @@ router.post('/enrollment', (req, res) => {
                     console.error(insertErr);
                     return res.status(500).send('Internal Server Error');
                 }
-                return res.json({
-                    success: true,
-                    message: '저장 성공'
-                });
+                if(insertResult.length === 0){
+                    return res.json({
+                        success: false,
+                        message: '저장 실패'
+                    });
+                }else{
+                    return res.json({
+                        success: true,
+                        message: '저장 성공'
+                    });
+                }
+                
             });
         }
         
