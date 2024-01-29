@@ -15,7 +15,7 @@ const StudyInfo = ({selectedTOC}) =>{
     // selectedTOC이 null이거나 MaterialType이 null인 경우 처리
     return (
       <div className="main-content" style={{ marginRight: '150px' }}>
-        <p>선택된 TOC이 null이거나 MaterialType이 null입니다.</p>
+        <p>선택된 TOC가 null이거나 MaterialType이 null입니다.</p>
       </div>
     );
   }
@@ -93,7 +93,7 @@ const OnlineStudy = () => {
             {isSidebarOpen ? '접기' : '펼치기'}
           </button>
           {isSidebarOpen && (
-          <div className="sidebar-content">
+          <div className="sidebar-content" style={{maxHeight: '600px', overflowY: 'auto'}}>
             <h2>{lecture.Title}</h2>
             {Toc && Toc.map((toc)=>(
               <div  key={toc.TOCID}>

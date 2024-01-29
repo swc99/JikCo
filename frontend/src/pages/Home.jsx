@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.01.29
  * Description : Main Home
  */
 import React, { useState, useEffect, useContext } from 'react';
@@ -90,10 +90,10 @@ const Home = () => {
                                             <h2 className="card-title">{homelist.ftitle}</h2>
                                             {homelist.fdescription ? (
                                                 <p className="card-description">
-                                                    {homelist.description.length > maxLength ? `${homelist.description.slice(0, maxLength)}...` : homelist.description}
+                                                    {homelist.fdescription.length > maxLength ? `${homelist.fdescription.slice(0, maxLength)}...` : homelist.description}
                                                 </p>
                                             ) : null}
-                                            <p>평점 : {renderStars(homelist.freviewScore)}</p>
+                                            <p>평점 : {renderStars(homelist.freviewScore)} {homelist.freviewScore}</p>
                                             <p>리뷰 : {homelist.freviewCount}</p>
                                             
                                         </div>
@@ -115,7 +115,7 @@ const Home = () => {
                                                     {homelist.description.length > maxLength ? `${homelist.description.slice(0, maxLength)}...` : homelist.description}
                                                 </p>
                                             ) : null}
-                                            <p>평점 : {renderStars(homelist.freviewScore)}</p>
+                                            <p>평점 : {renderStars(homelist.reviewScore)} {homelist.reviewScore}</p>
                                             <p>리뷰 : {homelist.reviewCount}</p>
                                             
                                         </div>
@@ -141,7 +141,7 @@ const Home = () => {
                                             <p className="card-description">
                                                 {homelist.description.length > maxLength ? `${homelist.description.slice(0, maxLength)}...` : homelist.description}</p>
                                         ) : null}
-                                        <p>평점 : {renderStars(homelist.freviewScore)}</p>
+                                        <p>평점 : {renderStars(homelist.reviewScore)} {homelist.reviewScore}</p>
                                         <p>리뷰 : {homelist.reviewCount}</p>
                                     </div>
                                     <button className="card-button" 

@@ -8,7 +8,6 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import kakao from '../img/kakao.png';
 import {AuthContext} from '../context/AuthContext';
-import { useCookies } from "react-cookie";
 
 
 const Login = () => {
@@ -16,7 +15,6 @@ const Login = () => {
         userEmail: "",
         userPassword: "",
     });
-    const [cookies, setCookie] = useCookies(['accesstoken']);
     const [err, setError] = useState(null);
 
     const nav = useNavigate();
@@ -27,15 +25,11 @@ const Login = () => {
         e.preventDefault();
         try {
             await login(inputs);
-            // setCookie('accesstoken', token, { path: '/' });
             console.log(inputs);
             nav("/");
         } catch (err) {
-            // 에러 객체를 확인하여 어떤 속성이 있는지 로그에 출력
             console.error(err);
-            // err 객체가 response 속성을 가지고 있는지 확인
             if (err.response) {
-                // response 속성이 있을 경우, data 속성이 있는지 확인
                 if (err.response.data) {
                     setError(err.response.data);
                 } else {
@@ -49,18 +43,22 @@ const Login = () => {
     const handleChange = (e) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+      };
     
     return (
         <div className='auth'>
             <p>Login</p>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>ID</label>
                 <input type="text" placeholder='Email' name='userEmail' onChange={handleChange} />
                 <label>Password</label>
-                <input type="password" placeholder='password' name='userPassword' onChange={handleChange}/>
-                <button type="button" onClick={handleSubmit} >Login</button>
+                <input type="password" placeholder='password' name='userPassword' onChange={handleChange} onKeyDown={(e)=>handleKeyDown(e.key)}/>
+                <button>Login</button>
                 <button style={{ backgroundColor: 'yellow' , color:'black'}}><img className='kakao' src={kakao}/>로그인</button>
-                <p>This is an error!</p>
                 <span> 아직 계정이 없다면?</span>
                 <Link className='link' to={'/register'}>
                 <button className="actionBtn1">

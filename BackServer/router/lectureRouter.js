@@ -100,7 +100,49 @@ router.post('/enrollment', (req, res) => {
         
     });
 });
+//찜하기 취소
+router.post('/enrollment/throw', (req, res) => {
+    const lectureId = req.body.LectureID;
+    const userId = req.body.UserID;
+    console.log(lectureId, userId);
+    
+    // SELECT 쿼리로 이미 데이터가 있는지 확인
+    const sql = `SELECT * FROM ENROLLMENTS WHERE USERID = ? AND LECTUREID = ? AND PAYMENTSTATUS = '0';`
+    const values = [userId, lectureId];
+    db.query(sql,values,(err,result)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        if(result.length === 0){
+            res.json({
+                success: false,
+                message: '데이터가 없습니다.'
+            });
+        }
+        const sql = `DELETE FROM ENROLLMENTS WHERE USERID = ? AND LECTUREID = ? AND PAYMENTSTATUS = '0';`
+        const values = [userId, lectureId];
 
+        db.query(sql, values,(err,deleteResult)=>{
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Internal Server Error');
+            }
+            if(deleteResult.length === 0){
+                res.json({
+                    success: false,
+                    message: '찜목록 삭제 실패'
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: '찜목록 삭제 성공'
+                });
+            }
+        });
+    });
+
+});
 //강의 리뷰 작성
 router.post('/board_upload',(req,res)=>{
     const lectureId = req.body.LectureID;
@@ -109,21 +151,37 @@ router.post('/board_upload',(req,res)=>{
     const content = req.body.Content;
     const score = req.body.Score;
 
-    const sql = `INSERT INTO BOARD (LectureID, USERID, TITLE, CONTENT, Score) VALUE (?,?,?,?,?);`;
-    const values = [lectureId,userId,title,content,score];
+    const sql = `SELECT * FROM ENROLLMENTS WHERE LECTUREID = ? AND USERID = ? AND PAYMENTSTATUS ='1';`;
+    const values = [lectureId,userId]
 
-    db.query(sql,values,(err,result)=>{
-        if(err){
+    db.query(sql,values,(err,selectResult)=>{
+        if (err) {
             console.error(err);
             return res.status(500).send('Internal Server Error');
-        }else{
-            console.log(result);
+        }
+        if(selectResult.length === 0){
             res.json({
-                success : true,
-                message : '저장 성공'
+                success:false,
+                message:'수강중인 강의가 아닙니다. ㅡ.ㅡ;;'
+            });
+        }else{
+            const sql = `INSERT INTO BOARD (LectureID, USERID, TITLE, CONTENT, Score) VALUE (?,?,?,?,?);`;
+            const values = [lectureId,userId,title,content,score];
+    
+            db.query(sql,values,(err,result)=>{
+                if(err){
+                    console.error(err);
+                    return res.status(500).send('Internal Server Error');
+                }else{
+                    console.log(result);
+                    res.json({
+                        success : true,
+                        message : '저장 성공'
+                    });
+                }
             });
         }
-    });
+    })
 });
 
 module.exports = router;

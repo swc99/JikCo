@@ -58,7 +58,7 @@ const MyOnline = () => {
                     
                     {studyLecture.map((lecture) => (
                             <div className='lecturelist' key={lecture.LectureID}>
-                                <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
+                                <img style={{height:'80px', width:'100px'}} src={lecture.LectureImage}/>
                                 <p>{lecture.TITLE}</p>
                                 <p>{lecture.AttendanceRate}</p>
                                 <div className='keepbtn'>

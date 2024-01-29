@@ -107,7 +107,7 @@ const Register = () => {
       }
 
     return (
-        <div className='auth'>
+        <div className='auth' style={{height:'100%'}}>
             <p>Register</p>
             <form>
                 <table className='frtable'>

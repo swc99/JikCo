@@ -7,6 +7,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import axios from 'axios';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -64,6 +65,22 @@ const Cart = () => {
         console.log('선택한 강의 정보:', selectedCoursesInfo);
         nav('/payment',{state : selectedCoursesInfo});
     };
+    const handleDrop = async (lectureId) => {
+        try {
+            const res = await axios.post(`${serverUrl}/lectureDetail/enrollment/throw`, { LectureID: lectureId, UserID: currentUser[0].UserID });
+    
+            if (res.data.success) {
+                // 삭제 성공 시 해당 강의를 찜 목록에서 UI에서 제거
+                setNonStudyLectures(prevLectures => prevLectures.filter(lecture => lecture.LectureID !== lectureId));
+                alert('삭제 성공');
+            } else {
+                alert('삭제 실패');
+            }
+        } catch (error) {
+            console.error('삭제 중 에러 발생:', error);
+            alert('삭제 중 오류 발생');
+        }
+    };
 
 
     return (
@@ -100,6 +117,7 @@ const Cart = () => {
                                         }
                                     }}
                                 />
+                                <button onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
                             </div>
                         ))}
                     </div>

@@ -6,7 +6,6 @@
  */
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import lectureimg from '../img/Jikcoimg.jpg'
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -142,6 +141,7 @@ const LectureDetail = ()=>{
             window.location.reload();
           } else {
             console.error('리뷰 저장 실패');
+            alert(response.data.message)
             // 저장 실패에 대한 처리를 여기에 추가할 수 있습니다.
           }
         } catch (error) {
