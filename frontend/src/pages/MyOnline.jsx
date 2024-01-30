@@ -1,18 +1,23 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.01.30
  * Description : Lectrue History 
  */
 import React,{useState, useEffect, useContext} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import ProgressBar from '../components/ProgressBar';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
+
+
 
 const MyOnline = () => {
     const [studyLecture, setStudyLectures ] = useState([]);
     const {currentUser} = useContext(AuthContext);
     const nav = useNavigate();
+
+    
 
     useEffect(()=>{
         fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`)
@@ -54,14 +59,17 @@ const MyOnline = () => {
             </div>
 
             <div className='infoview' style={{padding:'10px'}}>
-                <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
+                <div style={{display:'flex', flexDirection:'column', maxHeight: '600px', overflowY: 'auto', 
+                backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     
                     {studyLecture.map((lecture) => (
                             <div className='lecturelist' key={lecture.LectureID}>
                                 <img style={{height:'80px', width:'100px'}} src={lecture.LectureImage}/>
-                                <p>{lecture.TITLE}</p>
-                                <p>{lecture.AttendanceRate}</p>
-                                <div className='keepbtn'>
+                                <p style={{width:'25%', maring:'10px'}}>{lecture.TITLE}</p>
+                                <div  style={{width:'300px', marginBottom:'5px',padding:'10px'}}>
+                                <ProgressBar progress={lecture.AttendanceRate}/>
+                                </div>
+                                <div className='keepbtn' style={{display:'flex',flexDirection:'column', width:'100px'}}>
                                     <button onClick={()=>handlesubmit(lecture.LectureID)}>이어 보기</button>
                                     <button onClick={()=>handleClickReview(lecture.LectureID)}>리뷰</button>
                                 </div>

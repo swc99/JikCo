@@ -1,7 +1,7 @@
 /**
  * 작성자 : 성우창
  * 작성일 : 24.01.12
- * 수정 : 24.01.26
+ * 수정 : 24.01.30
  * endpoint : /api
  * description : code 정리, bcrypt, Token
  */

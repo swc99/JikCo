@@ -1,16 +1,18 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.01.30
  * Description : 
  */
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const StudyInfo = ({selectedTOC}) =>{
+
   if (!selectedTOC || selectedTOC.MaterialType === null) {
     // selectedTOC이 null이거나 MaterialType이 null인 경우 처리
     return (
@@ -22,15 +24,7 @@ const StudyInfo = ({selectedTOC}) =>{
   return (
       <div className="main-content" style={{marginRight:'150px'}}>
         <div className="video-container">
-          <iframe
-            width="560"
-            height="315"
-            src={selectedTOC.MaterialType === 'video' ? selectedTOC.MaterialURL: ""}
-            title="YouTube video player"
-            frameBorder={'0'}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+          <VideoPlayer tocId = {selectedTOC.TOCID} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>
         </div>
 
         <div className="video-description">

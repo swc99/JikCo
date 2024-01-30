@@ -19,7 +19,7 @@ const Payment = () => {
             // lectureDetails에 있는 강의 중에서 선택한 강의만 계산
             if (lecture.selected) {
                 // 교재 구매 여부에 따라 가격 계산
-                total += lecture.LECTUREPAY + (lecture.hasBook ? 10000 : 0);
+                total += lecture.LECTUREPAY + (lecture.Book ? 10000 : 0);
             }
             return total;
         }, 0);

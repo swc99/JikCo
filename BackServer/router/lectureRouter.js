@@ -192,4 +192,66 @@ router.post('/board_upload',(req,res)=>{
     })
 });
 
+router.post('/tocInfoSet',(req,res)=>{
+    const userId = req.body.UserID;
+    const tocId = req.body.TOCID;
+    const progress = req.body.Progress;
+
+    console.log(userId,tocId,progress);
+
+    const sql = `SELECT * FROM VideoProgress WHERE USERID = ? AND TOCID = ?;`;
+    const values = [userId,tocId];
+    db.query(sql,values,(err,selectResult)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        if(selectResult.length === 0){
+            const sql = `INSERT INTO VideoProgress (USERID,TOCID,PROGRESS,LASTACCESSED)
+            VALUE (?,?,?,NOW());`;
+            const values = [userId,tocId,progress];
+            db.query(sql,values,(err,insertResult)=>{
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Internal Server Error');
+                }
+                if(insertResult.length === 0){
+                    res.json({
+                        success: false,
+                        message: ' false'
+                    });
+                }else{
+                    res.json({
+                        success: true,
+                        message: '성공'
+                    });
+                }
+            });
+        }else{
+            const sql = `UPDATE VideoProgress SET Progress = ? WHERE USERID = ? AND TOCID = ?;`;
+            const values = [progress,userId,tocId];
+            db.query(sql,values,(err,updateResult)=>{
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Internal Server Error');
+                }
+                if(updateResult.length === 0){
+                    res.json({
+                        success: false,
+                        message: '업데이트 실패'
+                    });
+                }else{
+                    res.json({
+                        success: true,
+                        message: '업데이트 성공'
+                    })
+                }
+                
+
+            });
+        }
+    });
+
+});
+
 module.exports = router;

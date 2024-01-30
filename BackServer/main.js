@@ -1,7 +1,7 @@
 /**
  * 작성자 : 성우창
  * 작성일 : 24.01.10
- * 수정 날짜 : 24.01.13
+ * 수정 날짜 : 24.01.30
  * JikCo Server!
  */
 const http = require('http');
@@ -18,11 +18,16 @@ const corsOptions = {
     origin: 'http://localhost:3000', // 클라이언트의 주소로 변경
     credentials: true,
 };
-
 const app = express();
 dotenv.config();
 
 
+app.use(express.static('public'));
+app.use('/images/:imageName', function(req, res){
+  var imgName = req.params.imageName;
+  console.log('이미지 요청: ' + imgName);
+  res.sendFile(path.join(__dirname, 'public', imgName));
+});
 app.use(cors(corsOptions));
 app.use(cookieparser());
 app.use(bodyParser.json());
