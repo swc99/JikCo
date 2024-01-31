@@ -58,11 +58,26 @@ const Register = () => {
     };
 
     const handlePasswordCheck = (e) => {
+        const password = inputs.insertPassword;
+        // 최소 길이 검사
+        if (password.length < 8) {
+            setPass('암호는 최소 8자 이상이어야 합니다.');
+            return;
+        }
+
+        // 대문자, 소문자, 숫자, 특수문자 포함 검사
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+
+        if (!regex.test(password)) {
+            setPass('암호는 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.');
+            return;
+        }
+
         if (inputs.confirmPassword && inputs.confirmPassword !== inputs.insertPassword) {
             setPass('암호가 일치하지 않습니다.');
-        } else {
-            setPass('암호 일치');
+            return;
         }
+        setPass('암호 일치');
     };
     const handleRegistration = () => {
         console.log('가입 요청');
@@ -85,8 +100,21 @@ const Register = () => {
         }
       };
 
-      const emailCheck= async() =>{
-        const res = await axios.post(`${serverUrl}/signUp/emailduplicate`,inputs.insertEmail);
+    const isEmailValid = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+    
+
+      const emailCheck = async () =>{
+        const email = inputs.insertEmail;
+    // 이메일 형식 유효성 검사
+        if (!isEmailValid(email)) {
+            setEmailduplicate('유효한 이메일 형식이 아닙니다.');
+            return;
+        }
+
+        const res = await axios.post(`${serverUrl}/signUp/emailduplicate`,{UserEmail:inputs.insertEmail});
         console.log(res.data);
         setEmailduplicate(res.data.message);
       }
@@ -144,7 +172,7 @@ const Register = () => {
                         </tr>
                         <tr>
                             <td colSpan="3">
-                                <h6 style={{ marginTop: '5px', marginBottom: '5px' }}>
+                                <h6 style={{ marginTop: '5px', marginBottom: '5px', color:'red' }}>
                                     {pass}
                                 </h6>
                             </td>

@@ -1,8 +1,8 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.30
- * Description : Lectrue History 
+ * Last : 24.01.31
+ * Description : My Lectrue 
  */
 import React,{useState, useEffect, useContext} from 'react';
 import { Link, useNavigate } from 'react-router-dom';

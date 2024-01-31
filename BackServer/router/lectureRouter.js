@@ -1,11 +1,10 @@
 /**
- * 작성자 : 성우창
- * 작성일 : 24.01.12
- * 수정 : 24.01.26
+ * Author : woo
+ * Date : 24.01.12
+ * Last : 24.01.26
  * Endpoint : /api/lectureDetail
- * description : 
+ * Description : 
  */
-
 const db = require('../DB/DBconn');
 const router = require('express').Router();
 const bodyParser = require('body-parser');

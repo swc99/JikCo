@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.30
+ * Last : 24.01.31
  * Description : 
  */
 
@@ -14,7 +14,6 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 const StudyInfo = ({selectedTOC}) =>{
 
   if (!selectedTOC || selectedTOC.MaterialType === null) {
-    // selectedTOC이 null이거나 MaterialType이 null인 경우 처리
     return (
       <div className="main-content" style={{ marginRight: '150px' }}>
         <p>선택된 TOC가 null이거나 MaterialType이 null입니다.</p>

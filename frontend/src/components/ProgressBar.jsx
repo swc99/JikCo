@@ -4,12 +4,7 @@
  * Last : 24.01.30
  * Description : Progress Bar
  */
-import React,{useState, useEffect, useContext} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-
-
+import React from 'react';
 
 const ProgressBar = ({ progress }) => {
 

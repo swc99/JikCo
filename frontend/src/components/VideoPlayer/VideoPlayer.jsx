@@ -1,3 +1,9 @@
+/**
+ * Update User : woo
+ * Last : 24.01.31
+ * Description : Player
+ */
+
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import './VideoPlayer.css';
 import ProgressBar from '../ProgressBar';
@@ -26,53 +32,70 @@ function VideoPlayer({ src, tocId }) {
   const rewind = () => {
     videoRef.current.currentTime -= 10;
   };
-
+  const restartVideo = () => {
+    videoRef.current.currentTime = 0;
+    setCurrentTime(0);
+  };
+  
   useEffect(() => {
     const video = videoRef.current;
-
+    let playIntervalId;
+  
     const timeUpdateHandler = () => {
       setCurrentTime(video.currentTime);
     };
-
+  
     const loadedMetadataHandler = () => {
       setDuration(video.duration);
     };
-
+  
     const sendProgressToServer = async () => {
-      const currentTime = video.currentTime;
+      const currentTime = videoRef.current.currentTime;
       console.log(`Sending progress to server: ${currentTime}`);
-      const res = await axios.post(`${serverUrl}/lectureDetail/tocInfoSet`,{TOCID : tocId, UserID : currentUser[0].UserID, Progress: currentTime});
-      console.log('woo',res.data);
-      if(res.data.success){
+      const res = await axios.post(`${serverUrl}/lectureDetail/tocInfoSet`, {
+        TOCID: tocId,
+        UserID: currentUser[0].UserID,
+        Progress: currentTime
+      });
+      console.log('woo', res.data);
+      if (res.data.success) {
         console.log(res.data.message);
-      }else{
+      } else {
         alert(res.data.message);
       }
     };
-
-    // 30초마다 함수를 호출
-    const intervalId = setInterval(sendProgressToServer, 30000);
-
-    // 비디오가 끝났을 때
+  
     const handleVideoEnd = () => {
-        console.log('영상 끝!',currentTime);
+      // 비디오가 끝났을 때
+      setCurrentTime(video.duration);
 
-        clearInterval(intervalId);
-        video.removeEventListener('timeupdate', timeUpdateHandler);
-    };
+      console.log('영상 끝!', video.duration);
 
-    video.addEventListener('timeupdate', timeUpdateHandler);
-    video.addEventListener('loadedmetadata', loadedMetadataHandler);
-    video.addEventListener('ended', handleVideoEnd);
-
-    return () => {
-      clearInterval(intervalId);
+      clearInterval(playIntervalId);
       video.removeEventListener('timeupdate', timeUpdateHandler);
-      video.removeEventListener('loadedmetadata', loadedMetadataHandler);
-      video.removeEventListener('ended', handleVideoEnd);
-    };
-  }, []);
 
+        sendProgressToServer();
+    };
+  
+    const handlePlayButtonClick = () => {
+      playIntervalId = setInterval(() => {
+        sendProgressToServer();
+      }, 20000);
+      video.addEventListener('timeupdate', timeUpdateHandler);
+      video.addEventListener('ended', handleVideoEnd);
+    };
+    video.addEventListener('play', handlePlayButtonClick);
+    video.addEventListener('loadedmetadata', loadedMetadataHandler);
+  
+    return () => {
+      clearInterval(playIntervalId);
+      video.removeEventListener('timeupdate', timeUpdateHandler);
+      video.removeEventListener('ended', handleVideoEnd);
+      video.removeEventListener('play', handlePlayButtonClick);
+      video.removeEventListener('loadedmetadata', loadedMetadataHandler);
+    };
+  }, [tocId]);
+  
   return (
     <div className="video-container">
       <video className="video-player" ref={videoRef} src={src}></video>
@@ -92,6 +115,10 @@ function VideoPlayer({ src, tocId }) {
 
         <button className="control-button" onClick={fastForward}>
           Fast Forward
+        </button>
+
+        <button className="control-button" onClick={restartVideo}>
+          ReStart
         </button>
       </div>
 
