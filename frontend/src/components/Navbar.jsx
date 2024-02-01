@@ -1,14 +1,14 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.02.01
  * Description : Nav
  */
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
-import {AuthContexProvider, AuthContext} from '../context/AuthContext';
+import { AuthContext} from '../context/AuthContext';
 
 
 
@@ -35,7 +35,6 @@ const Navbar = () => {
       handleSearchSubmit();
     }
   };
-  
 
   return (
     <div className="navbar">

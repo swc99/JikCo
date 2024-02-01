@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.02.01
  * Description : Lectrue list 
  */
 import React, {useState, useEffect, useContext} from 'react';
@@ -92,12 +92,11 @@ const Cart = () => {
                     <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>
                     <li><Link className= 'link' to={'/Cart'}>찜 목록</Link></li>
                     <li><Link className= 'link' to={'/paymentlist'}>결제 내역</Link></li>
-                </ul>            
+                </ul>
             </div>
-            <br/>
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
-                <div style={{display:'flex',justifyItems:'auto'}}>
+                <div style={{display:'flex',justifyItems:'auto',padding:'5%'}}>
                 {nonStudyLectures && nonStudyLectures.map((lecture) => (
                             <div key={lecture.TITLE} style={{ marginLeft: '20px' }}>
                                 <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
@@ -117,7 +116,7 @@ const Cart = () => {
                                         }
                                     }}
                                 />
-                                <button onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
+                                <button style={{marginLeft:'50%'}} onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
                             </div>
                         ))}
                     </div>

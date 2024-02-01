@@ -6,10 +6,8 @@
  */
 import React, {useEffect, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
-import userimg from '../img/edit.png';
-import {AuthContexProvider, AuthContext} from '../context/AuthContext';
+import { AuthContext} from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
-
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useState({});
@@ -17,12 +15,12 @@ const Profile = () => {
 
     useEffect(() => {
         // 서버에서 유저 정보를 가져오는 요청
-        fetch(`${serverUrl}/userInfo/?userId=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
+        fetch(`${serverUrl}/userInfo/?userId=${currentUser[0].UserID}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     console.log(data.UserInfo);
-                    setUserInfo(data.UserInfo[0]); // 첫 번째 요소를 가져옴 (유저 ID로 조회하므로 결과는 하나여야 함)
+                    setUserInfo(data.UserInfo[0]);
                 } else {
                     console.error('유저 정보를 가져오는데 실패했습니다.');
                 }

@@ -67,7 +67,6 @@ router.post('/enrollment', (req, res) => {
     const userId = req.body.UserID;
     console.log(lectureId, userId);
     
-    // SELECT 쿼리로 이미 데이터가 있는지 확인
     const selectSql = `SELECT * FROM ENROLLMENTS WHERE USERID = ? AND LECTUREID = ?;`
     const selectValues = [userId, lectureId];
 
@@ -113,7 +112,6 @@ router.post('/enrollment/throw', (req, res) => {
     const userId = req.body.UserID;
     console.log(lectureId, userId);
     
-    // SELECT 쿼리로 이미 데이터가 있는지 확인
     const sql = `SELECT * FROM ENROLLMENTS WHERE USERID = ? AND LECTUREID = ? AND PAYMENTSTATUS = '0';`
     const values = [userId, lectureId];
     db.query(sql,values,(err,result)=>{
@@ -245,7 +243,6 @@ router.post('/tocInfoSet',(req,res)=>{
                         message: '업데이트 성공'
                     })
                 }
-                
 
             });
         }

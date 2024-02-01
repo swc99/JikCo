@@ -1,9 +1,14 @@
+/**
+ * Author : woo
+ * Date : 24.01.15
+ * Last : 24.01.26
+ * Description : Main
+ */
 import "./style.scss";
-import React, { useState } from 'react';
+import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   Outlet,
 } from 'react-router-dom';
 
@@ -36,7 +41,6 @@ const Layout = () => {
     </>
   );
 }
-
 
 const router = createBrowserRouter([
   {

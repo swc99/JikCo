@@ -18,8 +18,7 @@ const ProgressBar = ({ progress }) => {
             textAlign: 'center',
             color: 'white',
             lineHeight: '20px',
-          }}
-        >
+          }}>
           {`${progress}%`}
         </div>
       </div>

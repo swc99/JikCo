@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.31
+ * Last : 24.02.01
  * Description : 
  */
 
@@ -44,9 +44,6 @@ const OnlineStudy = () => {
   const [Toc, setTOC] = useState([]);
   const [selectedTOC, setSelectedTOC] = useState(null);
 
-  console.log(lectureID);
-
-
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -72,12 +69,10 @@ const OnlineStudy = () => {
   },[])
   const handleClickTOC = (TOCID) => {
     const selectedTOC = lectureM.find((toc) => toc.TOCID === TOCID);
-  
     if (selectedTOC) {
       setSelectedTOC(selectedTOC);
     }
   }
-
   return (
     <div className={`app ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{marginTop:'20px'}}>
       
@@ -94,10 +89,8 @@ const OnlineStudy = () => {
                 {toc.ParentTOC !== null && <ul><li onClick={()=>handleClickTOC(toc.TOCID)}>{toc.TITLE}</li></ul>}
               </div>
               ))}
-            
           </div>
       )}
-
         </div>
       <StudyInfo selectedTOC={selectedTOC}/>
     </div>

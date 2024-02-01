@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.01.31
  * Description : Payment
  */
 import React, { useState, useEffect } from 'react';
@@ -19,7 +19,7 @@ const Payment = () => {
             // lectureDetails에 있는 강의 중에서 선택한 강의만 계산
             if (lecture.selected) {
                 // 교재 구매 여부에 따라 가격 계산
-                total += lecture.LECTUREPAY + (lecture.Book ? lecture.Book : 0);
+                total += lecture.LECTUREPAY + (lecture.hasBook ? lecture.Book : 0);
             }
             return total;
         }, 0);

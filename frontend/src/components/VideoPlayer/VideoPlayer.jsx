@@ -1,7 +1,7 @@
 /**
  * Update User : woo
- * Last : 24.01.31
- * Description : Player
+ * Last : 24.02.01
+ * Description : Video Player
  */
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -66,10 +66,9 @@ function VideoPlayer({ src, tocId }) {
     };
   
     const handleVideoEnd = () => {
-      // 비디오가 끝났을 때
       setCurrentTime(video.duration);
 
-      console.log('영상 끝!', video.duration);
+      alert(`영상 끝! - ${video.duration}`);
 
       clearInterval(playIntervalId);
       video.removeEventListener('timeupdate', timeUpdateHandler);

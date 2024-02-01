@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.26
+ * Last : 24.02.01
  * Description : Lectrue Detail
  */
 import React, { useState, useEffect, useContext } from 'react'
@@ -20,8 +20,7 @@ const ReviewForm = ({ handleStarClick, selectedStars, onSubmit }) => {
               <span
                 key={star}
                 style={{ cursor: 'pointer' }}
-                onClick={() => handleStarClick(star)}
-              >
+                onClick={() => handleStarClick(star)}>
                 {star <= selectedStars ? '★' : '☆'}
               </span>
             ))}
@@ -48,9 +47,6 @@ const LectureDetail = ()=>{
     
     const nav = useNavigate();
     const {lectureID} = useParams();
-    console.log(lectureID);
-
-
 
     useEffect(() => {
       axios.post(`${serverUrl}/lectureDetail`, { LectureID: lectureID })
@@ -60,9 +56,9 @@ const LectureDetail = ()=>{
                   setLectureInfo(data.lectureDetail);
                   setToc(data.toc);
                   setBoard(data.board);
-                  console.log('서버 응답',lectureInfo);
               } else {
                   console.error('강의 정보를 가져오는데 실패했습니다.');
+                  alert('강의 정보를 가져오는데 실패했습니다.');
               }
           })
           .catch((error) => {
@@ -107,7 +103,6 @@ const LectureDetail = ()=>{
                 stars.push(<span key={i}>&#9734;</span>); // 빈 별
             }
         }
-    
         return stars;
     };
 
@@ -150,9 +145,6 @@ const LectureDetail = ()=>{
         }
       };
       
-
-      
-      
     return(
         <div className='app'>
             <div>
@@ -168,25 +160,24 @@ const LectureDetail = ()=>{
                             <button type='button' onClick={() => handleButtonClick('insToc')}>목차 소개</button>
                             <button type='button' onClick={() => handleButtonClick('review')}>리뷰</button>
                         </div>
-                        <div>{lectureInfo.Title}</div>
+                        <div>
+                          <h3>{lectureInfo.Title}</h3>
+                        </div>
                         <div id='inslecture'>
-                            <ul>
-                                <li>강의 소개</li>
-                            </ul>
+                            <h3>강의 소개</h3>
                             <p>
                                 {lectureInfo.Description ? lectureInfo.Description : '강의 소개가 없습니다.'}
                             </p>
                         </div>
                         <div id='insInstrutor'>
-                            <ul>
-                                <li>강사 소개</li>
-                            </ul>
+                        <h3>강사 소개</h3>
                             <h3>{lectureInfo.InstructorName}</h3>
                             <p>
                                 {lectureInfo.Career}
                             </p>
                         </div>
                         <div id='insToc'>
+                        <h3>목차</h3>
                           <ul>
                           {toc.map((toclist)=>(
                             <li key={toclist.TOCID}>{toclist.TITLE}</li>
@@ -195,8 +186,8 @@ const LectureDetail = ()=>{
                         </div>
                     </div>
                 </div>
-                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-                {board && board.map((boardlist)=>{
+                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px', height: '5%' }}>
+                {board.ID != null ? board.map((boardlist)=>{
                     return(
                     <div key={boardlist.ID}>
                         <p>
@@ -206,7 +197,7 @@ const LectureDetail = ()=>{
                         </p>
                     </div>
                     );
-                })}
+                }) : <div><h4>작성된 리뷰가 없습니다.</h4></div>}
                 </div>
                 <div>
                 <ReviewForm
@@ -221,7 +212,7 @@ const LectureDetail = ()=>{
                 <p>{lectureInfo.Title}</p> 
                 <p>가격 : {lectureInfo.LecturePay + lectureInfo.Book}</p>
                 <p> 교재 유무 : {lectureInfo.Book ? lectureInfo.Book : '없음'}</p>
-                <button type='button' onClick={handlesideButtonClick}>수강하기</button>
+                <button type='button' onClick={handlesideButtonClick}>수강등록하기</button>
             </div>
         </div>
     );

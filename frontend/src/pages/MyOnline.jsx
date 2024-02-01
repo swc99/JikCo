@@ -10,14 +10,10 @@ import { AuthContext } from '../context/AuthContext';
 import ProgressBar from '../components/ProgressBar';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-
-
 const MyOnline = () => {
     const [studyLecture, setStudyLectures ] = useState([]);
     const {currentUser} = useContext(AuthContext);
     const nav = useNavigate();
-
-    
 
     useEffect(()=>{
         fetch(`${serverUrl}/userInfo/study_lecture/?UserID=${currentUser[0].UserID}`)

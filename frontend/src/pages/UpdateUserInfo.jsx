@@ -10,8 +10,6 @@ import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-
-
 const UpdateUserInfo = () => {
     const {currentUser} = useContext(AuthContext);
     const [categorylist, setCategoryList] = useState(

@@ -212,7 +212,7 @@ router.post('/login', (req, res) => {
                         key,
                         {
                             expiresIn:"1h",
-                            issuer:"토큰발급자"
+                            issuer:"woo"
                         }
                     );
                     res.cookie("accesstoken",token,{
@@ -238,7 +238,6 @@ router.post('/login', (req, res) => {
 //로그아웃
 router.get('/logout', (req, res) => {
     try {
-      // 클라이언트로부터 쿠키를 얻기 위해 request.cookies 사용
       const cookies = req.cookies;
       console.log(cookies);
       if (cookies !== null) {

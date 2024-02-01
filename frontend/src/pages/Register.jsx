@@ -133,7 +133,6 @@ const Register = () => {
         }else{
             console.log('작성하지 않은 부분을 확인해주세요');
         }
-        
       }
 
     return (
