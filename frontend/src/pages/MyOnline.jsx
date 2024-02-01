@@ -45,7 +45,7 @@ const MyOnline = () => {
         <div className='myinfo' style={{height:'550px'}}>
 
             <div className='infonav'>
-                <ul style={{backgroundColor:'#fff', borderRadius:'10px',marginTop:'45px'}}>
+                <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
                     <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>
                     <li><Link className= 'link' to={'/updateUserinfo'}>내 정보 수정</Link></li>
                     <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>

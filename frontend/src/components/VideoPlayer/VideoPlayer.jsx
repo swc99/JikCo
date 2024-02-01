@@ -73,7 +73,7 @@ function VideoPlayer({ src, tocId }) {
       clearInterval(playIntervalId);
       video.removeEventListener('timeupdate', timeUpdateHandler);
 
-        sendProgressToServer();
+      sendProgressToServer();
     };
   
     const handlePlayButtonClick = () => {

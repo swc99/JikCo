@@ -7,6 +7,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext} from '../context/AuthContext';
+import defaultimage from '../img/DefaultImage.png';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const Profile = () => {
@@ -33,7 +34,7 @@ const Profile = () => {
     return (
         <div className='myinfo' style={{height:'550px'}}>
             <div className='infonav'>
-                <ul style={{backgroundColor:'#fff', borderRadius:'10px',marginTop:'45px'}}>
+                <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
                     <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>
                     <li><Link className= 'link' to={'/updateUserinfo'}>내 정보 수정</Link></li>
                     <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>
@@ -45,7 +46,7 @@ const Profile = () => {
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     <div className='userinfo'>
-                        <img style={{ margin: '30px', width: '100px' }} src={userInfo.UserImg} />
+                        <img style={{ margin: '30px', width: '100px' }} src={userInfo.UserImg ? userInfo.UserImg : defaultimage} />
                         <form style={{ marginLeft: '200px', marginTop: '30px' }}>
                             <table>
                                 <tbody>

@@ -25,7 +25,6 @@ const StudyInfo = ({selectedTOC}) =>{
         <div className="video-container">
           <VideoPlayer tocId = {selectedTOC.TOCID} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>
         </div>
-
         <div className="video-description">
           <h2>{selectedTOC.TITLE}</h2>
           <p>
