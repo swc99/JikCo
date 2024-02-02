@@ -354,7 +354,6 @@ router.post('/lecture_Status',(req,res)=>{
                 }
 
             })
-            
         });
     });
 });

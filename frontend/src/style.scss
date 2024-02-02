@@ -526,55 +526,6 @@ body {
 
       }
     }
-
-    .actionBtn3 {
-      display:block;
-      width:166px;
-       height:38px;
-      margin:auto;
-      text-align:center;
-      -webkit-transition:all .3s ease;
-      -moz-transition:all .3s ease;
-      transform-style:preserve-3d;
-      -webkit-transform-style:preserve-3d;
-    }
-    .actionBtn3 .front,.actionBtn3 .back {
-      position:absolute;
-      display:block;
-      width:166px;
-       height:38px;
-       border:1px solid #4c4c4d;
-      line-height:40px;
-      transition:all .5s;
-      -webkit-transition:-webkit-transform .5s;
-      -moz-transition:-moz-transform .5s;
-      color:#4c4c4d;
-       font-size:14px;
-       font-family:oswald;
-       text-decoration:none;
-       text-transform:uppercase;
-    }
-    .actionBtn3 .front {
-      background-color:#fff;
-      transform:translateZ(19px);
-      -webkit-transform:translateZ(19px);
-      -moz-transform:translateZ(19px);
-    }
-    .actionBtn3 .back {
-      background-color:#1d9957;
-      color:#fff;
-      transform:rotateX(-90deg) translateZ(19px);
-      -webkit-transform:rotateX(-90deg) translateZ(19px);
-      -moz-transform:rotateX(-90deg) translateZ(19px);
-    }
-    .actionBtn3:hover {
-      transform:rotateX(90deg);
-      -webkit-transform:rotateX(90deg);
-      -moz-transform:rotateX(90deg);
-    }
-
-    
-
     // SINGLE
     .single {
       display: flex;

@@ -130,7 +130,6 @@ const UpdateUserInfo = () => {
                         </label>
                         </div>
                         
-                        
                         <div className='categoryList'>
                         {categorylist.map((category) => (
                             <label key={category.categoryId}>
