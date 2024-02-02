@@ -313,6 +313,14 @@ router.post('/signUp/emailduplicate',(req,res) => {
         
     });
 });
+// Token
+router.get('/checkToken',auth,(req,res) => {
+    res.json({
+        success: true,
+        message: '토큰 유효성 확인 성공',
+        // 추가적인 정보를 응답에 포함할 수 있습니다.
+      });
+});
 
 //강의 시청
 router.post('/lecture_Status',(req,res)=>{

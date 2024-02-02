@@ -1,12 +1,12 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.01
+ * Last : 24.02.02
  * Description : Nav
  */
 
-import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
 import { AuthContext} from '../context/AuthContext';
 
@@ -15,8 +15,9 @@ import { AuthContext} from '../context/AuthContext';
 const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const nav = useNavigate();
-  const { currentUser } = useContext(AuthContext);
-  const { logout } = useContext(AuthContext);
+  const { currentUser,logout, checkTokenValidity } = useContext(AuthContext);
+  const location = useLocation();
+
 
   const handleLogout = () =>{
     logout();
@@ -35,6 +36,20 @@ const Navbar = () => {
       handleSearchSubmit();
     }
   };
+  useEffect(() => {
+    const checkToken = async () => {
+      const result = await checkTokenValidity();
+      if (result) {
+        console.log('토큰 유효');
+      }else{
+        handleLogout();
+      }
+    };
+    console.log('navBar');
+    if(currentUser !== null){
+      checkToken();
+    }
+  }, [location.pathname]);
 
   return (
     <div className="navbar">

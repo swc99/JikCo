@@ -32,7 +32,7 @@ const Profile = () => {
     }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
 
     return (
-        <div className='myinfo' style={{height:'550px'}}>
+        <div className='myinfo'>
             <div className='infonav'>
                 <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
                     <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>

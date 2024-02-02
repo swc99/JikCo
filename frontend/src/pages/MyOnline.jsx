@@ -42,7 +42,7 @@ const MyOnline = () => {
         nav(`/lectureDetail/${lecturID}`);
     };
     return (
-        <div className='myinfo' style={{height:'550px'}}>
+        <div className='myinfo'>
 
             <div className='infonav'>
                 <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>

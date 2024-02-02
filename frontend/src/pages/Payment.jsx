@@ -54,7 +54,7 @@ const Payment = () => {
     };
 
     return (
-        <div className='payment'>
+        <div className='payment' style={{width:'1024px'}}>
             <div className='paymentinner'>
                 {lectureDetails.map((lecture, index) => (
                     <div key={lecture.LectureID} style={{ display: 'flex', flexDirection: 'row', marginBottom: '20px' }}>

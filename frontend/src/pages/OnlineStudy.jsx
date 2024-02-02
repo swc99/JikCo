@@ -73,7 +73,7 @@ const OnlineStudy = () => {
     }
   }
   return (
-    <div className={`app ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{marginTop:'20px'}}>
+    <div className={`app ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`} style={{marginTop:'20px', width:'1024px'}}>
       
         <div className="sidebar" style={{marginRight:'auto'}}>
           <button className="toggle-button" onClick={toggleSidebar}>

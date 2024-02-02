@@ -42,7 +42,7 @@ const PaymentList = () => {
 
 
     return (
-        <div className='myinfo' style={{height:'550px'}}>
+        <div className='myinfo'>
             <div className='infonav'>
                 <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
                     <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>

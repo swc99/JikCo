@@ -147,7 +147,7 @@ const LectureDetail = ()=>{
       
     return(
         <div className='app'>
-            <div>
+            <div style={{width:'1024px'}}>
                 <button type='button' onClick={handlesideButtonClick} style={{marginLeft:'850px',height:'10px' , border:'none', backgroundColor:'transparent'}}>찜하기</button>
                 <div className='lectureDetail'>
                     <div className='lectureImage'>
@@ -186,7 +186,7 @@ const LectureDetail = ()=>{
                         </div>
                     </div>
                 </div>
-                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px', height: '5%' }}>
+                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: 'none', padding: '10px', height: '5%'}}>
                 {board.ID != null ? board.map((boardlist)=>{
                     return(
                     <div key={boardlist.ID}>

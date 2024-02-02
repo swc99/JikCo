@@ -73,7 +73,7 @@ const Home = () => {
     };
     const maxLength = 50; // 원하는 최대 길이
     return (
-        <div className='frhome' style={{marginTop:'10px'}}>
+        <div className='frhome' style={{marginTop:'10px', width:'1024px'}}>
             <img className='homeimg' src={homeimg} alt="Homepage" />
             <h6>사진 출처 : 에듀퓨어</h6>
 
