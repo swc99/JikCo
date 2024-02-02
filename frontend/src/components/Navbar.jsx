@@ -53,7 +53,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div className="container" style={{ height: '100px' }}>
+      <div className="container" style={{ height: '100px',borderBottom: '5px solid #96d97e'}}>
         <div className="logo">
           <Link className="link" to={'/'}>
             <img style={{ marginBottom: '30px', width: '150px' }} src={mainlogo} />
@@ -87,7 +87,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div style={{marginRight:'10px'}}>
         {currentUser ? 
         <div className="links">
           <Link className="link" to="#" onClick={handleLogout}>

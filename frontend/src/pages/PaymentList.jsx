@@ -54,7 +54,7 @@ const PaymentList = () => {
             </div>
             <br/>
             <div className='infoview' style={{padding:'10px'}}>
-                <div style={{ backgroundColor: '#fff', height: '450px', marginTop: '13px', borderRadius: '10px' }}>
+                <div style={{ backgroundColor: '#fff', height: '500px', marginTop: '13px', borderRadius: '10px' }}>
                     {paymentList.map((payment) => (
                         <div key={payment.PAYMENTDATE} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                             <div style={{ marginLeft: '10px' }}>
