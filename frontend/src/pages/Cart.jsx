@@ -121,7 +121,7 @@ const Cart = () => {
                         ))}
                     </div>
                     <div className='pay'>
-                        <p>총 합계: {totalAmount}</p>
+                        <p style={{marginRight:'3%'}}>총 합계: {totalAmount}</p>
                         <button onClick={handlePayment}>결제 하기</button>
                     </div>
                 </div>

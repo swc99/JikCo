@@ -193,6 +193,7 @@ router.post('/tocInfoSet',(req,res)=>{
     const userId = req.body.UserID;
     const tocId = req.body.TOCID;
     const progress = req.body.Progress;
+    const lectureId = req.body.LectureID;
 
     console.log(userId,tocId,progress);
 
@@ -204,9 +205,9 @@ router.post('/tocInfoSet',(req,res)=>{
             return res.status(500).send('Internal Server Error');
         }
         if(selectResult.length === 0){
-            const sql = `INSERT INTO VideoProgress (USERID,TOCID,PROGRESS,LASTACCESSED)
-            VALUE (?,?,?,NOW());`;
-            const values = [userId,tocId,progress];
+            const sql = `INSERT INTO VideoProgress (USERID,TOCID,PROGRESS,LASTACCESSED,LECTUREID)
+            VALUE (?,?,?,NOW(),?);`;
+            const values = [userId,tocId,progress,lectureId];
             db.query(sql,values,(err,insertResult)=>{
                 if (err) {
                     console.error(err);

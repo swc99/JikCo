@@ -11,7 +11,7 @@ import { Link, useParams } from 'react-router-dom';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-const StudyInfo = ({selectedTOC}) =>{
+const StudyInfo = ({selectedTOC,lectureId}) =>{
 
   if (!selectedTOC || selectedTOC.MaterialType === null) {
     return (
@@ -23,7 +23,7 @@ const StudyInfo = ({selectedTOC}) =>{
   return (
       <div className="main-content" style={{marginRight:'150px'}}>
         <div className="video-container">
-          <VideoPlayer tocId = {selectedTOC.TOCID} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>
+          <VideoPlayer tocId = {selectedTOC.TOCID} lectureID={lectureId} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>
         </div>
         <div className="video-description">
           <h2>{selectedTOC.TITLE}</h2>
@@ -92,7 +92,7 @@ const OnlineStudy = () => {
           </div>
       )}
         </div>
-      <StudyInfo selectedTOC={selectedTOC}/>
+      <StudyInfo selectedTOC={selectedTOC} lectureId={lectureID}/>
     </div>
   );
 };

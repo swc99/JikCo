@@ -11,10 +11,8 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-const VideoPlayer = ({ src, tocId }) => {
+const VideoPlayer = ({ src, tocId,lectureID }) => {
 
-  console.log(src);
-  console.log(tocId);
   const videoRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -41,6 +39,10 @@ const VideoPlayer = ({ src, tocId }) => {
   };
   
   useEffect(() => {
+    
+  console.log(src);
+  console.log(tocId);
+  setCurrentTime(0);
     const video = videoRef.current;
     let playIntervalId;
   
@@ -58,6 +60,7 @@ const VideoPlayer = ({ src, tocId }) => {
       const res = await axios.post(`${serverUrl}/lectureDetail/tocInfoSet`, {
         TOCID: tocId,
         UserID: currentUser[0].UserID,
+        LectureID: lectureID,
         Progress: currentTime
       });
       console.log('woo', res.data);
@@ -88,7 +91,7 @@ const VideoPlayer = ({ src, tocId }) => {
     };
     video.addEventListener('play', handlePlayButtonClick);
     video.addEventListener('loadedmetadata', loadedMetadataHandler);
-  
+    
     return () => {
       clearInterval(playIntervalId);
       video.removeEventListener('timeupdate', timeUpdateHandler);
@@ -127,7 +130,6 @@ const VideoPlayer = ({ src, tocId }) => {
       <div >
         <div className="progress-bar" style={{display:'flex',flexDirection:'column'}}>
           <ProgressBar progress={Number((currentTime / duration * 100).toFixed(0))} />
-
           <div className="time-indicator" style={{display:'flex', flexDirection:'row'}}>
             <span className="current-time">{currentTime.toFixed(1)}</span>
             <span className="duration"  style={{marginLeft:'auto'}}>{duration.toFixed(1)}</span>
