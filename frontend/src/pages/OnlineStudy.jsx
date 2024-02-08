@@ -47,7 +47,8 @@ const OnlineStudy = () => {
     setSidebarOpen(!isSidebarOpen);
   };
   
-  useEffect(()=>{async function fetchData(){
+  useEffect(()=>{
+    const fetchData = async () => {
       const res = await axios.post(`${serverUrl}/lecture_Status`,{LectureID:lectureID});
       if(res.data.success){
         console.log('강의 정보를 성공 적으로 불러왔습니다.');

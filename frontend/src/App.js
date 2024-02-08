@@ -12,24 +12,25 @@ import {
   Outlet,
 } from 'react-router-dom';
 
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import Write from "./pages/Write"
-import Home from "./pages/Home"
-import Single from "./pages/Single"
-import Search from "./pages/Search"
-import Courses from "./pages/Courses"
-import OnlineStudy from "./pages/OnlineStudy"
-import Profile from "./pages/Profile"
-import MyOnline from "./pages/MyOnline"
-import Cart from "./pages/Cart"
-import Payment from "./pages/Payment"
-import PaymentList from "./pages/PaymentList"
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Write from "./pages/Write";
+import Home from "./pages/Home";
+import Single from "./pages/Single";
+import Search from "./pages/Search";
+import Courses from "./pages/Courses";
+import OnlineStudy from "./pages/OnlineStudy";
+import Profile from "./pages/Profile";
+import MyOnline from "./pages/MyOnline";
+import Cart from "./pages/Cart";
+import Payment from "./pages/Payment";
+import PaymentList from "./pages/PaymentList";
 import LectureDetail from "./pages/LectureDetail";
 import UpdateUserInfo from './pages/UpdateUserInfo';
 
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import KakaoCallback from "./components/KakaoCallback";
 
 const Layout = () => {
   
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "/onlinestudy/:lectureID",
         element: <OnlineStudy />
+      },
+      {
+        path: "/kakaoCallback",
+        element: <KakaoCallback/>
       },
     ]
   },

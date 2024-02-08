@@ -8,6 +8,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import defaultimage from '../img/DefaultImage.png';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const UpdateUserInfo = () => {
@@ -23,6 +24,7 @@ const UpdateUserInfo = () => {
     const [userInfo, setUserInfo] = useState({
         username: currentUser[0].UserName,
         phone: currentUser[0].UserPhone,
+        userimage: currentUser[0].UserImage,
         category1: currentUser[0].CategoryID1,
         category2: currentUser[0].CategoryID2,
         category3: currentUser[0].CategoryID3,
@@ -98,7 +100,6 @@ const UpdateUserInfo = () => {
             alert(`정보 수정 실패!!!!\n${res.data.message}`);
         }
     }
-
     return (
         <div className='myinfo'>
             <div className='infonav'>
@@ -110,40 +111,38 @@ const UpdateUserInfo = () => {
                     <li><Link className= 'link' to={'/paymentlist'}>결제 내역</Link></li>
                 </ul>            
             </div>
-
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     <form onSubmit={handleSubmit}>
-                        <div style={{ display:'flex' , flexDirection:"column", margin:'10px'}}>
-                        <label>
-                        <h3>이름</h3>
-                            <input type="text" name="insertName" placeholder={userInfo.username} onChange={handleChange} />
-                        </label>
-                        <br />
-                        <label>
-                        <h3>연락처</h3>
-                            <input type="text" name="insertPhone" placeholder={userInfo.phone} onChange={handleChange} />
-                        </label>
-                        <br />
-                        <label>
-                            <h3>관심 분야</h3>
-                        </label>
+                        <div style={{display:'flex', flexDirection:'row'}}>
+                            <img style={{ margin: '5%', width: '18%' }}
+                             src={userInfo.userimage ? `http://localhost:4000/${userInfo.userimage}`: defaultimage} />
+                            <div style={{ display:'flex' , flexDirection:"column", margin:'10px'}}>
+                                <label>
+                                <h3>이름</h3>
+                                    <input type="text" name="insertName" placeholder={userInfo.username} onChange={handleChange} />
+                                </label>
+                                <br />
+                                <label>
+                                <h3>연락처</h3>
+                                    <input type="text" name="insertPhone" placeholder={userInfo.phone} onChange={handleChange} />
+                                </label>
+                                <br />
+                            </div>
                         </div>
-                        
+                        <h3 style={{marginLeft:'10px'}}>관심 분야</h3>
                         <div className='categoryList'>
-                        {categorylist.map((category) => (
-                            <label key={category.categoryId}>
-                                <input
-                                    type='checkbox'
-                                    checked={inputs.selectedCategories.includes(category.categoryId)}
-                                    onChange={() => handleCheckboxChange(category.categoryId)}
-                                />
-                                {category.categoryName}
-                            </label>
-                        ))}
+                            {categorylist.map((category) => (
+                                <label key={category.categoryId}>
+                                    <input
+                                        type='checkbox'
+                                        checked={inputs.selectedCategories.includes(category.categoryId)}
+                                        onChange={() => handleCheckboxChange(category.categoryId)}/>
+                                    {category.categoryName}
+                                </label>
+                            ))}
                         </div>
-                        <br />
-                        <button type="submit">정보 수정</button>
+                        <button style={{marginLeft:'10px'}} type="submit">정보 수정</button>
                     </form>
                 </div>
             </div>

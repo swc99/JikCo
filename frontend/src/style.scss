@@ -322,7 +322,6 @@ body {
           display: flex;
           align-items: center;
           gap: 10px;
-
           h6 {
             font-size: 16px;
             font-weight: 300;
@@ -448,7 +447,7 @@ body {
 
         .card-image {
           width: 100%;
-          height: auto;
+          height: 200px;
           display: block;
         }
 
@@ -560,7 +559,7 @@ body {
       display: flex;
       flex-direction: column;
       background-color: $lightGreen;
-      width: 900px;
+      
       .lectureImage{
         display: flex;
         margin: 10px;
@@ -587,7 +586,7 @@ body {
     .lectureside{
         background-color: #96d97e;
         padding: 5px;
-        width: 250px;
+        width: 200px;
         height: 150px;
         position: fixed;
         top: 20%;

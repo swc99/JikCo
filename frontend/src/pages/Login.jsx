@@ -6,11 +6,16 @@
  */
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import kakao from '../img/kakao.png';
 import {AuthContext} from '../context/AuthContext';
+// import KakaoLogin from '../components/KakaoLogin';
+import KakaoLogin from 'react-kakao-login';
+import axios from 'axios';
 
+const Client_Key = process.env.REACT_APP_CLIENT_KEY;
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const Login = () => {
+    const kakaoClientId = Client_Key;
     const [inputs, setInputs] = useState({
         userEmail: "",
         userPassword: "",
@@ -47,7 +52,39 @@ const Login = () => {
         if (e.key === 'Enter') {
             handleSubmit(e);
         }
+    };
+
+    const kakaoOnSuccess = async (data) => {
+        console.log('카카오로그인',data);
+        const idToken = data.response.access_token;
+        console.log("idToken", idToken)
+        if (idToken) {
+            try {
+                const response = await axios.post(
+                    `${serverUrl}/kakaoCallback`,
+                    {
+                        idToken,
+                    },
+                    {
+                        withCredentials: true,
+                    }
+                );
+                console.log("response.data12: ", response.data);
+                await login({
+                    userEmail:response.data.UserEmail, 
+                    userPassword:response.data.Password
+                });
+                nav('/');
+                    
+            } catch (error) {
+                console.log("error: ", error);
+            }
+        }
       };
+      const kakaoOnFailure = (error) => {
+        window.location.href='http://localhost:3000';
+      };
+
     
     return (
         <div className='auth'>
@@ -57,8 +94,22 @@ const Login = () => {
                 <input type="text" placeholder='Email' name='userEmail' onChange={handleChange} />
                 <label>Password</label>
                 <input type="password" placeholder='password' name='userPassword' onChange={handleChange} onKeyDown={(e)=>handleKeyDown(e.key)}/>
-                <button>Login</button>
-                <button style={{ backgroundColor: 'yellow' , color:'black'}}><img className='kakao' src={kakao}/>로그인</button>
+                <button style={{borderRadius: '5px'}}>Login</button>
+                <KakaoLogin
+                    type='button'
+                    token={kakaoClientId}
+                    onSuccess={kakaoOnSuccess}
+                    onFail={kakaoOnFailure}
+                    style={{
+                    padding: "10px",
+                    backgroundColor: "#FAE100",
+                    color: "black",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    }}
+                />
+
                 <span> 아직 계정이 없다면?</span>
                 <Link className='link' to={'/register'}>
                 <button className="actionBtn1">
@@ -66,7 +117,6 @@ const Login = () => {
                     <span>회원가입</span>
                 </button>
                 </Link>
-               
             </form>
         </div>
     );

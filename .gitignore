@@ -1,3 +1,4 @@
 BackServer/DB/
 .env
 BackServer/public/
+frontend/src/components

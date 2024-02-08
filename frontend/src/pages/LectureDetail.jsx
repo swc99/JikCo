@@ -87,7 +87,8 @@ const LectureDetail = ()=>{
                 alert('이미 수강등록 중입니다.');
             }
         }else{
-            nav('/login');
+          alert('수강 등록은 로그인 후 이용 가능 합니다.');
+          nav('/login');
         }
       }
 
@@ -148,7 +149,9 @@ const LectureDetail = ()=>{
     return(
         <div className='app'>
             <div style={{width:'1024px'}}>
-                <button type='button' onClick={handlesideButtonClick} style={{marginLeft:'850px',height:'10px' , border:'none', backgroundColor:'transparent'}}>찜하기</button>
+                <button type='button' onClick={handlesideButtonClick} 
+                  style={{marginLeft:'92%',height:'10px' , border:'none', backgroundColor:'transparent'}}>
+                  찜하기</button>
                 <div className='lectureDetail'>
                     <div className='lectureImage'>
                         <img style={{width:'auto',height:'500px'}} src={lectureInfo.LectureImage}/>

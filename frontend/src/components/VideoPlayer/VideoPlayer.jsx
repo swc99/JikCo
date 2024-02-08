@@ -11,7 +11,10 @@ import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-function VideoPlayer({ src, tocId }) {
+const VideoPlayer = ({ src, tocId }) => {
+
+  console.log(src);
+  console.log(tocId);
   const videoRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

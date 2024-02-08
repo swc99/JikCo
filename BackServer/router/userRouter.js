@@ -164,7 +164,7 @@ router.post('/payment',(req,res)=>{
 router.post('/payment_list',(req,res)=>{
     const userId = req.body.UserID;
 
-    const sql = `SELECT P.PAY, P.PAYMENTDATE , L.TITLE,L.LECTUREPAY ,L.BOOK AS B_PAY,P.BOOK FROM PAYMENTS P
+    const sql = `SELECT P.PAY, P.PAYMENTDATE , L.TITLE, L.LECTUREIMAGE,L.LECTUREPAY ,L.BOOK AS B_PAY,P.BOOK FROM PAYMENTS P
     JOIN LECTURES L ON L.LECTUREID = P.LECTUREID WHERE P.USERID = ?;`;
     const values = [userId];
 

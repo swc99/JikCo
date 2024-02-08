@@ -75,14 +75,13 @@ const Home = () => {
     return (
         <div className='frhome' style={{marginTop:'10px', width:'1024px'}}>
             <img className='homeimg' src={homeimg} alt="Homepage" />
-            <h6>사진 출처 : 에듀퓨어</h6>
+            <h6 style={{marginLeft: '14px'}}>사진 출처 : 에듀퓨어</h6>
 
             <div className="home">
                 {Frlectures && Frlectures.length > 0 ? (
                     <div style={{display:'flex', flexDirection:'column'}}>
-
+                                <h3 style={{marginLeft: '14px'}}>사용자 추천 강의</h3>
                             <div className="card-container" style={{maxHeight: '600px', overflowY: 'auto', borderBottom:'5px solid'}}>
-                                <h3>사용자 추천 강의</h3>
                                 {Frlectures.map((homelist) => (
                                     <div className="card" key={homelist.flectureId}>
                                         <img className="card-image" src={homelist.flectureImage} alt="Course" />
@@ -103,8 +102,8 @@ const Home = () => {
                                     </div>
                                 ))}
                             </div>
+                            <h3 style={{marginLeft: '14px'}}>전체 강의</h3>
                             <div className="card-container" style={{maxHeight: '600px', overflowY: 'auto', marginTop:'20px', borderTop: '5px solid'}}>
-                                <h3>전체 강의</h3>
                                 {lecturelistHome.map((homelist) => (
                                     <div className="card" key={homelist.lectureId}>
                                         <img className="card-image" src={homelist.lectureImage} alt="Course" />
@@ -129,9 +128,8 @@ const Home = () => {
 
                     ) : (
                 <div style={{display:'flex', flexDirection:'column'}}>
-
+                            <h3 style={{marginLeft: '14px'}}>전체 과목</h3>
                         <div className="card-container" style={{maxHeight: '600px', overflowY: 'auto'}}>
-                            <h3>전체 과목</h3>
                             {lecturelistHome.map((homelist) => (
                                 <div className="card" key={homelist.lectureId}>
                                     <img className="card-image" src={homelist.lectureImage} alt="Course" />

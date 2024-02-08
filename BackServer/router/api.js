@@ -14,6 +14,9 @@ const dotenv = require('dotenv');
 const {auth} = require('../middleware/cookieJwtAuth');
 const cors = require('cors');
 const cookieparser = require('cookie-parser');
+const axios = require('axios');
+const multer = require('multer');
+const path = require('path');
 
 dotenv.config();
 
@@ -24,7 +27,7 @@ router.get('/',(req,res) => {
     const cookies = req.cookies;
     const user = req.query.user;
     if(user != null){
-        const sql = `SELECT TITLE , LECTUREIMAGE , STARTTIME, LECTUREID, reviewcount,reviewscore
+        const sql = `SELECT TITLE , LECTUREIMAGE , STARTTIME, Description,LECTUREID, reviewcount,reviewscore
         FROM LECTURES
         WHERE CATEGORYID IN (SELECT CATEGORYID1 FROM USER WHERE USERID = ?
         UNION
@@ -181,6 +184,7 @@ router.post('/login', (req, res) => {
     console.log(key);
     const userEmail = req.body.userEmail;
     const password = req.body.userPassword;
+    console.log('로그인 데이타',userEmail,password);
     let token = "";
 
     const sql = `SELECT * FROM USER WHERE USEREMAIL = ?;`;
@@ -363,6 +367,127 @@ router.post('/lecture_Status',(req,res)=>{
 
             })
         });
+    });
+});
+//kakaologin
+// kakaoCallback
+
+router.post('/kakaoCallback', async function(req, res) {
+    const access_token = req.body.idToken;
+    console.log("access_token", access_token);
+    let UserEmail = "";
+    let Password = "";
+    let UserName = "";
+    let UserCellPhone = "";
+    let ProfileImage = "";
+    if (access_token != null && access_token) {
+      const profileUrl = "https://kapi.kakao.com/v2/user/me";
+        try {
+            const profileResponse = await axios.get(profileUrl, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            });
+            console.log('프로필',profileResponse.data);
+            Password = profileResponse.data.id.toString();
+            PasswordCheck = profileResponse.data.id.toString();
+            UserEmail = profileResponse.data.kakao_account.email;
+            UserName = profileResponse.data.kakao_account.name;
+            UserCellPhone =
+            "0" +
+            profileResponse.data.kakao_account.phone_number.replace(
+                /[\s+\-+]|82/g,
+                ""
+            );
+            ProfileImage = profileResponse.data.kakao_account.profile.profile_image_url;
+            db.query(
+                "SELECT UserEmail, Password FROM `USER` WHERE UserEmail = ?",
+                [UserEmail],
+                async (err, result) => {
+                console.log("result12", result);
+                if(err){
+                    console.error(err);
+                    return res.status(500).send('Internal Server Error');
+                }
+                if (result.length === 0) {
+                    // 비밀번호 해싱
+                    const hashedPassword = await bcrypt.hash(Password, 10);
+                    console.log("hashedPassword", hashedPassword);
+                    const sql = `INSERT INTO USER (UserEmail, UserName, UserPhone, Password, UserImage, CategoryID1, CategoryID2, CategoryID3)
+                    VALUES (?, ?, ?, ?, ?, '1', '2', '3')`;
+                    db.query(sql,[UserEmail, UserName, UserCellPhone, hashedPassword, ProfileImage],
+                    (err, result) => {
+                        if (err) {
+                        console.log(err);
+                        res.status(500).json({ error: "내부 서버 오류" });
+                        return;
+                        }
+                    }
+                );
+              }
+              res.send({
+                UserEmail,
+                Password,
+              });
+            }
+          );
+        } catch (error) {
+            console.error("프로필 요청 중 에러 발생:", error);
+            res.status(500).send("프로필 요청 중에 오류가 발생했습니다.");
+        }
+    } else {
+        console.error("액세스 토큰이 없습니다.");
+        res.status(400).send("액세스 토큰이 없습니다.");
+    }
+});
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/images');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
+
+router.post('/imageChange', upload.single('image'), (req, res, next) => {
+    const userId = req.body.UserID;
+    const imagePath = path.normalize(req.file.path);
+    const encodedFileName = encodeURIComponent(req.file.originalname);
+    const imageFilePath = `images/${encodedFileName}`;
+
+    console.log('파일 위치 : ', imageFilePath);
+    console.log('프로필 수정 유저 : ',userId);
+
+    const sql = `UPDATE USER SET USERIMAGE = ? WHERE USERID = ?;`
+    const values = [imageFilePath, userId];
+    db.query(sql,values,(err,result)=>{
+        if(err){
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        const sql = `SELECT * FROM USER WHERE USERID = ?;`;
+        const value = [userId];
+        db.query(sql,value,(err,userinfo)=>{
+            if(err){
+                console.error(err);
+                return res.status(500).send('Internal Server Error');
+            }
+            if(userinfo === 0){
+                res.json({
+                    success: false,
+                    message: '이미지 업로드 쿼리 실패'
+                });
+            }else{
+                res.json({
+                    success: true,
+                    message: '이미지 업로드 성공',
+                    UserInfo: userinfo
+                })
+            }
+        })
+        
     });
 });
 

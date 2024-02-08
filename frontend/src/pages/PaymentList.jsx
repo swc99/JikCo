@@ -27,7 +27,7 @@ const PaymentList = () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    console.log(data.paymentList);
+                    console.log('구매 리스트',data.paymentList);
                     setPaymentList(data.paymentList);
                 } else {
                     console.log('결제 내역이 없습니다.');
@@ -58,10 +58,10 @@ const PaymentList = () => {
                     {paymentList.map((payment) => (
                         <div key={payment.PAYMENTDATE} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                             <div style={{ marginLeft: '10px' }}>
-                                <p>강의 이미지</p>
+                                <img style={{height:'80px', width:'100px'}} src={payment.LECTUREIMAGE} />
                             </div>
                             <div style={{ marginLeft: '10px' }}>
-                                <p>강의 가격: {payment.LECTUREPAY}<br />교재 유무: {payment.BOOK ? '있음' : '없음'}</p>
+                                <p>강의 가격: {payment.LECTUREPAY}<br />교재 : {payment.BOOK ? payment.B_PAY : '없음'}</p>
                             </div>
                             <div style={{ marginLeft: 'auto', marginRight: '10px', marginTop: 'auto' }}>
                                 <p>결제 금액: {payment.PAY}</p>

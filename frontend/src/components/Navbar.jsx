@@ -9,6 +9,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
 import { AuthContext} from '../context/AuthContext';
+import defaultimage from '../img/DefaultImage.png';
 
 
 
@@ -87,7 +88,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div style={{marginRight:'10px'}}>
+        <div style={{width:'20%'}}>
         {currentUser ? 
         <div className="links">
           <Link className="link" to="#" onClick={handleLogout}>
@@ -96,6 +97,11 @@ const Navbar = () => {
           <Link className="link" to='/profile'>
             {currentUser[0].UserName}
           </Link>
+          <Link className="link" to='/profile'>
+          <img style={{width:'50px',height:'10%', borderRadius:'100%'}} 
+              src={currentUser[0].UserImage != null ? `http://localhost:4000/${currentUser[0].UserImage}` : defaultimage} />
+          </Link>
+
         </div> :
           <div className="links">
           <Link className="link" to="/login">
