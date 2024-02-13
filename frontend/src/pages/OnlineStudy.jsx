@@ -6,13 +6,14 @@
  */
 
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
+import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const StudyInfo = ({selectedTOC,lectureId}) =>{
-
+ 
   if (!selectedTOC || selectedTOC.MaterialType === null) {
     return (
       <div className="main-content" style={{ marginRight: '150px' }}>
@@ -42,6 +43,8 @@ const OnlineStudy = () => {
   const [lectureM, setLectureM] = useState([]);
   const [Toc, setTOC] = useState([]);
   const [selectedTOC, setSelectedTOC] = useState(null);
+  const {currentUser} = useContext(AuthContext);
+
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -49,21 +52,49 @@ const OnlineStudy = () => {
   
   useEffect(()=>{
     const fetchData = async () => {
+      console.log('서버로 보낼 데이터 : ',lectureID,'  ',currentUser[0].UserID);
+
       const res = await axios.post(`${serverUrl}/lecture_Status`,{LectureID:lectureID});
-      if(res.data.success){
-        console.log('강의 정보를 성공 적으로 불러왔습니다.');
-        console.log(res.data);
-        setLecture(res.data.Lecture);
-        setLectureM(res.data.LectureM);
-        setTOC(res.data.Toc);
+        if(res.data.success){
+          console.log('강의 정보를 성공 적으로 불러왔습니다.');
+          console.log(res.data);
+          setLecture(res.data.Lecture);
+          setLectureM(res.data.LectureM);
+          setTOC(res.data.Toc);
+          
+    
+        }else{
+          console.log('정보 가져오기 실패 ㅜㅜ');
+          alert('실패 ㅜㅜ');
+        }
+      const response = await axios.post(`${serverUrl}/keep`,{
+        LectureID: lectureID,
+        UserID: currentUser[0].UserID
+      });
+      if(response.data.success){
+        console.log('이어보기 결과',response.data.message);
+        const keepTOC = response.data.KeepToc;
+        const lastestTOC = keepTOC.reduce((latest, current) => {
+          if (!latest || current.LastAccessed > latest.LastAccessed) {
+              return current;
+          } else {
+              return latest;
+          }
+      }, null);
+      console.log('last toc',lastestTOC);
+      
+        if (res.data.LectureM.length > 0) {
+          const lastIndex = res.data.LectureM.find((toc) => toc.TOCID === lastestTOC.TOCID);
+          setSelectedTOC(lastIndex);
+          console.log(lastIndex);
+        }
+      }else{
         if (res.data.LectureM.length > 0) {
           setSelectedTOC(res.data.LectureM[0]);
         }
-  
-      }else{
-        console.log('정보 가져오기 실패 ㅜㅜ');
-        alert('실패 ㅜㅜ');
       }
+      
+      
     }
     fetchData();
   },[])

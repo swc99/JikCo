@@ -40,9 +40,9 @@ const VideoPlayer = ({ src, tocId,lectureID }) => {
   
   useEffect(() => {
     
-  console.log(src);
-  console.log(tocId);
-  setCurrentTime(0);
+    console.log(src);
+    console.log(tocId);
+    setCurrentTime(0);
     const video = videoRef.current;
     let playIntervalId;
   

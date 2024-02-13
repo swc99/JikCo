@@ -243,7 +243,7 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
     try {
       const cookies = req.cookies;
-      console.log(cookies);
+      console.log('cookies',cookies);
       if (cookies !== null) {
         for (const userToken in cookies) {
           if (cookies.hasOwnProperty(userToken)) {
@@ -369,6 +369,37 @@ router.post('/lecture_Status',(req,res)=>{
         });
     });
 });
+
+router.post('/keep',(req,res)=>{
+    const userId = req.body.UserID;
+    const lectureId = req.body.LectureID;
+    const tocId = req.body.TOCID;
+
+    const sql = `SELECT * FROM VideoProgress
+    WHERE LectureID = ? AND UserID = ?;`;
+    const value = [lectureId,userId];
+    db.query(sql,value,(err,result)=>{
+        if(err){
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        if(result.length === 0){
+            console.log('이어보기 결과 없음');
+            res.json({
+                success: false,
+                message: '이어보기 결과 없음'
+            });
+        }else{
+            console.log('이어보기 결과', result);
+            res.json({
+                success: true,
+                message: '이어보기 결과 있음',
+                KeepToc: result
+            });
+        }
+    });
+});
+
 //kakaologin
 // kakaoCallback
 
