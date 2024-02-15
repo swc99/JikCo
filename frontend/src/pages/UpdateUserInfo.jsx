@@ -19,7 +19,8 @@ const UpdateUserInfo = () => {
     const [inputs, setInputs] = useState({
         insertName:"",
         insertPhone: "",
-        selectedCategories:[]
+        selectedCategories:currentUser[0].CategoryID1 && currentUser[0].CategoryID2 && currentUser[0].CategoryID3 ? 
+        [currentUser[0].CategoryID1, currentUser[0].CategoryID2, currentUser[0].CategoryID3] : []
     });
     const [userInfo, setUserInfo] = useState({
         username: currentUser[0].UserName,
@@ -65,12 +66,15 @@ const UpdateUserInfo = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 여기에 사용자 정보 업데이트 또는 API 호출 등을 추가하세요
         if(inputs.insertName === ""){
             inputs.insertName = userInfo.username;
         }
         if(inputs.insertPhone === ""){
             inputs.insertPhone = userInfo.phone;
+        }
+        if(inputs.selectedCategories.length != 3){
+            alert('카테고리는 3개 선택해야합니다.');
+            return;
         }
         console.log('수정된 사용자 정보:', inputs);
         setSendData((prevData) => ({

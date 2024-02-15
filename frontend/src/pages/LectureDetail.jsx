@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.01
+ * Last : 24.02.16
  * Description : Lectrue Detail
  */
 import React, { useState, useEffect, useContext } from 'react'
@@ -56,6 +56,7 @@ const LectureDetail = ()=>{
                   setLectureInfo(data.lectureDetail);
                   setToc(data.toc);
                   setBoard(data.board);
+                  console.log(data);
               } else {
                   console.error('강의 정보를 가져오는데 실패했습니다.');
                   alert('강의 정보를 가져오는데 실패했습니다.');
@@ -190,7 +191,7 @@ const LectureDetail = ()=>{
                     </div>
                 </div>
                 <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: 'none', padding: '10px', height: '5%'}}>
-                {board.ID != null ? board.map((boardlist)=>{
+                {board.length != 0 ? board.map((boardlist)=>{
                     return(
                     <div key={boardlist.ID}>
                         <p>
@@ -215,7 +216,9 @@ const LectureDetail = ()=>{
                 <p>{lectureInfo.Title}</p> 
                 <p>가격 : {lectureInfo.LecturePay + lectureInfo.Book}</p>
                 <p> 교재 유무 : {lectureInfo.Book ? lectureInfo.Book : '없음'}</p>
-                <button type='button' onClick={handlesideButtonClick}>수강등록하기</button>
+                <button type='button' onClick={handlesideButtonClick}>수강하기</button>
+                {currentUser != null ?
+                <Link to={'/Cart'}><button type='button'>찜 목록</button></Link> : <Link to={'/login'}><button type='button'>로그인</button></Link>}
             </div>
         </div>
     );

@@ -1,13 +1,13 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.01
+ * Last : 24.02.13
  * Description : 
  */
 
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer';
 import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
@@ -22,12 +22,12 @@ const StudyInfo = ({selectedTOC,lectureId}) =>{
     );
   }
   return (
-      <div className="main-content" style={{marginRight:'150px'}}>
+      <div className="main-content" style={{marginRight:'150px' ,width:'80%'}}>
         <div className="video-container">
+        <h2>{selectedTOC.TITLE}</h2>
           <VideoPlayer tocId = {selectedTOC.TOCID} lectureID={lectureId} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>
         </div>
         <div className="video-description">
-          <h2>{selectedTOC.TITLE}</h2>
           <p>
             {selectedTOC.Description}
           </p>
@@ -80,8 +80,8 @@ const OnlineStudy = () => {
           } else {
               return latest;
           }
-      }, null);
-      console.log('last toc',lastestTOC);
+        }, null);
+        console.log('last toc',lastestTOC);
       
         if (res.data.LectureM.length > 0) {
           const lastIndex = res.data.LectureM.find((toc) => toc.TOCID === lastestTOC.TOCID);
@@ -89,12 +89,11 @@ const OnlineStudy = () => {
           console.log(lastIndex);
         }
       }else{
+        const nonNullParentTOC = res.data.LectureM.find(toc => toc.ParentTOC !== null);
         if (res.data.LectureM.length > 0) {
-          setSelectedTOC(res.data.LectureM[0]);
+          setSelectedTOC(nonNullParentTOC);
         }
       }
-      
-      
     }
     fetchData();
   },[])

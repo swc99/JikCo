@@ -1,7 +1,7 @@
 /**
  * Author : 성우창
  * Date : 24.01.12
- * Last : 24.01.30
+ * Last : 24.02.13
  * Endpoint : /api
  * Description : code 정리, bcrypt, Token
  */
@@ -223,7 +223,7 @@ router.post('/login', (req, res) => {
                         httpOnly: true,
                         sameSite: 'lax', // or 'strict' or 'none' with 'secure' if HTTPS
                         // secure: true,
-                        maxAge: 3600000
+                        maxAge: 36000000
                     });
                     res.status(200).json({
                         success: true,
@@ -285,10 +285,18 @@ router.post('/signUp',(req,res) => {
                 console.error(err);
                 return res.status(500).send('Internal Server Error');
             }
-            res.json({
-                success : true,
-                message : '가입성공'
-            });
+            if(result.length === 0){
+                res.json({
+                    success : false,
+                    message : '가입실패'
+                });
+            }else{
+                res.json({
+                    success : true,
+                    message : '가입성공'
+                });
+            }
+            
         });
     });
 });

@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.01
+ * Last : 24.02.16
  * Description : Lectrue list 
  */
 import React, {useState, useEffect, useContext} from 'react';
@@ -14,11 +14,11 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 const Cart = () => {
     const [nonStudyLectures, setNonStudyLectures] = useState([]);
     const [selectedCourses, setSelectedCourses] = useState([]);
+    const [nullMessage , setNullMessage] = useState(null);
     const {currentUser} = useContext(AuthContext);
     const nav = useNavigate();
 
     useEffect(() => {
-        // 서버에서 강의 정보를 가져오는 요청
         fetch(`${serverUrl}/userInfo/nonstudy_lecture?UserID=${currentUser[0].UserID}`) // 쿼리 파라미터에 실제 사용자 ID를 넣어주세요
             .then((response) => response.json())
             .then((data) => {
@@ -27,7 +27,7 @@ const Cart = () => {
                     setNonStudyLectures(data.nonStudy);
                 } else {
                     console.error('강의 정보를 가져오는데 실패했습니다.');
-                    alert('찜 목록이 비어있습니다.')
+                    setNullMessage('찜 목록이 비어있습니다.');
                 }
             })
             .catch((error) => {
@@ -42,15 +42,13 @@ const Cart = () => {
           0
       )
     : 0;
-   
-    
 
-    // 선택한 강의 정보를 서버로 전송하는 함수
     const handlePayment = () => {
-        // 서버로 선택한 강의 정보를 전송하는 로직
         console.log('선택한 강의:', selectedCourses);
-    
-        // 강의 아이디와 제목이 있는 배열
+        if(selectedCourses.length === 0){
+            alert('결제할 강의가 선택 되지 않았습니다.');
+            return;
+        }
         const selectedCoursesInfo = nonStudyLectures
             .filter(lecture => selectedCourses.includes(lecture.TITLE))
             .map(lecture => ({
@@ -97,7 +95,8 @@ const Cart = () => {
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                 <div style={{display:'flex',justifyItems:'auto',padding:'5%'}}>
-                {nonStudyLectures && nonStudyLectures.map((lecture) => (
+                    {nullMessage}
+                    {nonStudyLectures && nonStudyLectures.map((lecture) => (
                             <div key={lecture.TITLE} style={{ marginLeft: '20px' }}>
                                 <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
                                 <p style={{width:'120px'}}>{lecture.TITLE}</p>

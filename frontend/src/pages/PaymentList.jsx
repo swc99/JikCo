@@ -1,8 +1,9 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.29
+ * Last : 24.02.16
  * Description : Payment List
+ *  alert 제거
  */
 import React,{ useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
@@ -10,6 +11,7 @@ import { AuthContext } from '../context/AuthContext';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const PaymentList = () => {
+    const [nullMessage , setNullMessage] = useState(null);
     const [paymentList, setPaymentList] = useState([]);
     const {currentUser} = useContext(AuthContext);
 
@@ -31,15 +33,13 @@ const PaymentList = () => {
                     setPaymentList(data.paymentList);
                 } else {
                     console.log('결제 내역이 없습니다.');
-                    alert('결제 내역이 없습니다.');
+                    setNullMessage('결제 내역이 없습니다.');
                 }
             })
             .catch((error) => {
                 console.error('결제 내역을 가져오는데 실패했습니다.', error);
             });
     }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
-
-
 
     return (
         <div className='myinfo'>
@@ -54,17 +54,20 @@ const PaymentList = () => {
             </div>
             <br/>
             <div className='infoview' style={{padding:'10px'}}>
-                <div style={{ backgroundColor: '#fff', height: '500px', marginTop: '13px', borderRadius: '10px' }}>
+                <div  style={{display:'flex', flexDirection:'column', maxHeight: '600px', overflowY: 'auto', 
+                backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
+                    {nullMessage}
                     {paymentList.map((payment) => (
                         <div key={payment.PAYMENTDATE} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                             <div style={{ marginLeft: '10px' }}>
                                 <img style={{height:'80px', width:'100px'}} src={payment.LECTUREIMAGE} />
                             </div>
                             <div style={{ marginLeft: '10px' }}>
-                                <p>강의 가격: {payment.LECTUREPAY}<br />교재 : {payment.BOOK ? payment.B_PAY : '없음'}</p>
+                                <p>강의 가격: {payment.LECTUREPAY}<br />교재 : {payment.BOOK === '1' ? payment.B_PAY : '없음'}</p>
                             </div>
-                            <div style={{ marginLeft: 'auto', marginRight: '10px', marginTop: 'auto' }}>
+                            <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: 'auto' }}>
                                 <p>결제 금액: {payment.PAY}</p>
+                                <p>결제 날짜:  {new Date(payment.PAYMENTDATE).toLocaleDateString()}</p>
                             </div>
                         </div>
                     ))}

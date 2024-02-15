@@ -31,7 +31,7 @@ export const AuthContexProvider = ({ children }) => {
     const logout = async () => {
         await axios.get(`${serverUrl}/logout`,{ withCredentials: true });
         setCurrentUser(null);
-        window.Kakao.Auth.logout();
+        // window.Kakao.Auth.logout();
     };
 
     const checkTokenValidity = async () => {

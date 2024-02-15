@@ -130,7 +130,6 @@ router.get('/nonstudy_lecture',(req,res)=>{
 router.post('/payment',(req,res)=>{
     const lectureId = req.body.LectureID;
     const userId = req.body.UserID;
-    // const paymentDate = req.body.PaymentDate;
     const pay = req.body.Pay;
     const address = req.body.Address;
     const name = req.body.Name;

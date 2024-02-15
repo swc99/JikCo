@@ -8,7 +8,6 @@ import React, {useEffect, useState, useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext} from '../context/AuthContext';
 import defaultimage from '../img/DefaultImage.png';
-import axios from 'axios';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -37,6 +36,10 @@ const Profile = () => {
     }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!file) {
+            alert('이미지가 선택되지 않았습니다.');
+            return; // 이미지가 선택되지 않았을 경우 함수 종료
+        }
         console.log('이미지 저장 요청');
         const formData = new FormData();
         formData.append('image', file); // FormData에 파일 추가
@@ -87,8 +90,13 @@ const Profile = () => {
                         </div>
                     </div>
                     <form onSubmit={handleSubmit}>
+                        <button type='button'
+                            style={{ height: '5%', marginTop: 'auto', marginLeft: '1%'}}
+                            onClick={() => document.getElementById('file').click()}>
+                            이미지 선택
+                        </button>
                         <button style={{ height: '5%', marginTop: 'auto', marginLeft: '1%'}}
-                        type='submit'>이미지 변경</button>
+                        type='submit'>변경 완료</button>
                         <input
                             style={{ display: "none" }}
                             type="file"
@@ -96,11 +104,6 @@ const Profile = () => {
                             name=""
                             onChange={handleFileChange}
                         />
-                        <button type='button'
-                            style={{ height: '5%', marginTop: 'auto', marginLeft: '1%'}}
-                            onClick={() => document.getElementById('file').click()}>
-                            이미지 선택
-                        </button>
                     {fileName && <p>선택한 파일: {fileName}</p>}
 
                     </form>

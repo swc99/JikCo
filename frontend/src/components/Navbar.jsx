@@ -10,7 +10,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import mainlogo from '../img/Jikcologo.png';
 import { AuthContext} from '../context/AuthContext';
 import defaultimage from '../img/DefaultImage.png';
-
+import on from '../img/onoff_on2.png';
+import off from '../img/onoff_off2.png';
 
 
 const Navbar = () => {
@@ -54,7 +55,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div className="container" style={{ height: '100px',borderBottom: '5px solid #96d97e'}}>
+      <div className="container" style={{ height: '100px',borderBottom: '5px solid #007bff'}}>
         <div className="logo">
           <Link className="link" to={'/'}>
             <img style={{ marginBottom: '30px', width: '150px' }} src={mainlogo} />
@@ -68,7 +69,7 @@ const Navbar = () => {
                 style={{ width: '450px' }}
                 type="text"
                 id="search-bar"
-                placeholder="검색"
+                placeholder="Category 검색"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -92,20 +93,22 @@ const Navbar = () => {
         {currentUser ? 
         <div className="links">
           <Link className="link" to="#" onClick={handleLogout}>
-            <h6>로그 아웃</h6>
+          <img style={{width:'50px',height:'10%', borderRadius:'5%'}} 
+              src={on} />
           </Link>
           <Link className="link" to='/profile'>
             {currentUser[0].UserName}
           </Link>
           <Link className="link" to='/profile'>
-          <img style={{width:'50px',height:'10%', borderRadius:'100%'}} 
+          <img style={{width:'50px',height:'10%', borderRadius:'100%', boxShadow:'0px 0px 20px  rgba(0, 0, 0, 0.5)'}} 
               src={currentUser[0].UserImage != null ? `http://localhost:4000/${currentUser[0].UserImage}` : defaultimage} />
           </Link>
 
         </div> :
           <div className="links">
           <Link className="link" to="/login">
-            <h6>로그인</h6>
+          <img style={{width:'50px',height:'10%', borderRadius:'5%'}} 
+              src={off} />
           </Link>
           <Link className="link" to="/register">
             <h6>회원가입</h6>

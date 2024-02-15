@@ -11,6 +11,7 @@ import ProgressBar from '../components/ProgressBar';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const MyOnline = () => {
+    const [nullMessage , setNullMessage] = useState(null);
     const [studyLecture, setStudyLectures ] = useState([]);
     const {currentUser} = useContext(AuthContext);
     const nav = useNavigate();
@@ -24,7 +25,7 @@ const MyOnline = () => {
                     setStudyLectures(data.study);
                 } else {
                     console.log(data.message);
-                    alert('수강중인 강의가 없습니다.');
+                    setNullMessage('수강중인 강의가 없습니다.');
                 }
             })
             .catch((error) => {
@@ -57,7 +58,7 @@ const MyOnline = () => {
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{display:'flex', flexDirection:'column', maxHeight: '600px', overflowY: 'auto', 
                 backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
-                    
+                    {nullMessage}
                     {studyLecture.map((lecture) => (
                             <div className='lecturelist' key={lecture.LectureID}>
                                 <img style={{height:'80px', width:'100px'}} src={lecture.LectureImage}/>

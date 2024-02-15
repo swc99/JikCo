@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.24
+ * Last : 24.02.16
  * Description : Search result
  */
 import React, { useState, useEffect } from 'react';
@@ -57,7 +57,7 @@ const Search = () => {
                         ))
                     ) : (
                         <div>
-                            <p>No results found</p>
+                            <p>카테고리 '{searchcategory}' 와 관련된 강의가 없습니다.</p>
                         </div>
                     )}
                 </div>
