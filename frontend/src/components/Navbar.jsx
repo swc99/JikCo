@@ -1,17 +1,17 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.02
+ * Last : 24.02.17
  * Description : Nav
  */
 
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import mainlogo from '../img/Jikcologo.png';
+import mainlogo from '../img/JIKCOlOGO.png';
 import { AuthContext} from '../context/AuthContext';
 import defaultimage from '../img/DefaultImage.png';
-import on from '../img/onoff_on2.png';
-import off from '../img/onoff_off2.png';
+import on from '../img/onoff_on3.png';
+import off from '../img/onoff_off3.png';
 
 
 const Navbar = () => {
@@ -58,7 +58,7 @@ const Navbar = () => {
       <div className="container" style={{ height: '100px',borderBottom: '5px solid #007bff'}}>
         <div className="logo">
           <Link className="link" to={'/'}>
-            <img style={{ marginBottom: '30px', width: '150px' }} src={mainlogo} />
+            <img style={{ marginBottom: '30px', width: '150px' }} src={mainlogo} alt='' />
           </Link>
         </div>
 
@@ -93,22 +93,22 @@ const Navbar = () => {
         {currentUser ? 
         <div className="links">
           <Link className="link" to="#" onClick={handleLogout}>
-          <img style={{width:'50px',height:'10%', borderRadius:'5%'}} 
-              src={on} />
+          <img style={{width:'50px',height:'10%', borderRadius:'40%',boxShadow: '0px 0px 20px rgba(0, 255, 0, 0.5)'}} 
+              src={on} alt='state : login'/>
           </Link>
           <Link className="link" to='/profile'>
             {currentUser[0].UserName}
           </Link>
           <Link className="link" to='/profile'>
-          <img style={{width:'50px',height:'10%', borderRadius:'100%', boxShadow:'0px 0px 20px  rgba(0, 0, 0, 0.5)'}} 
-              src={currentUser[0].UserImage != null ? `http://localhost:4000/${currentUser[0].UserImage}` : defaultimage} />
+          <img style={{width:'50px',height:'10%', borderRadius:'100%', boxShadow:'0px 0px 20px  rgba(0, 0, 0, 0.3)'}} 
+              src={currentUser[0].UserImage != null ? `http://localhost:4000/${currentUser[0].UserImage}` : defaultimage} alt=''/>
           </Link>
 
         </div> :
           <div className="links">
           <Link className="link" to="/login">
-          <img style={{width:'50px',height:'10%', borderRadius:'5%'}} 
-              src={off} />
+          <img style={{width:'50px',height:'10%', borderRadius:'40%',boxShadow:'0px 0px 20px  rgba(100, 0, 0, 0.3)'}} 
+              src={off} alt='state : logout'/>
           </Link>
           <Link className="link" to="/register">
             <h6>회원가입</h6>

@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.12
- * Last : 24.01.26
+ * Last : 24.02.16
  * Endpoint : /api/lectureDetail
  * Description : 
  */
@@ -33,7 +33,9 @@ router.post('/',(req,res) => {
                 return res.status(500).send('Internal Server Error');
             }
             
-            const sql = `SELECT * FROM BOARD WHERE LECTUREID = ? ;`;
+            const sql = `SELECT B.*,U.USERIMAGE FROM BOARD B
+            JOIN USER U ON B.USERID = U.USERID
+            WHERE B.LECTUREID = ?;`;
             const values = [lectureId];
 
             db.query(sql,values,(err, board)=>{
@@ -170,21 +172,41 @@ router.post('/board_upload',(req,res)=>{
                 message:'수강중인 강의가 아닙니다. ㅡ.ㅡ;;'
             });
         }else{
-            const sql = `INSERT INTO BOARD (LectureID, USERID, TITLE, CONTENT, Score) VALUE (?,?,?,?,?);`;
-            const values = [lectureId,userId,title,content,score];
-    
-            db.query(sql,values,(err,result)=>{
+            const sql = `SELECT * FROM BOARD 
+            WHERE USERID = ? AND LECTUREID = ?;`;
+            const values = [userId,lectureId];
+
+            db.query(sql,values,(err,check)=>{
                 if(err){
                     console.error(err);
                     return res.status(500).send('Internal Server Error');
+                }
+                if(check.length === 0){
+                    const sql = `INSERT INTO BOARD (LectureID, USERID, TITLE, CONTENT, Score,review_time) VALUE (?,?,?,?,?,NOW());`;
+                    const values = [lectureId,userId,title,content,score];
+    
+                    db.query(sql,values,(err,result)=>{
+                        if(err){
+                            console.error(err);
+                            return res.status(500).send('Internal Server Error');
+                        }else{
+                            console.log(result);
+                            res.json({
+                                success : true,
+                                message : '저장 성공'
+                            });
+                        }
+                    });
                 }else{
-                    console.log(result);
                     res.json({
-                        success : true,
-                        message : '저장 성공'
+                        success: false,
+                        message: '리뷰는 한번만 작성 가능합니다.'
                     });
                 }
             });
+
+
+            
         }
     })
 });

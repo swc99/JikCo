@@ -14,11 +14,8 @@ import {
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Write from "./pages/Write";
 import Home from "./pages/Home";
-import Single from "./pages/Single";
 import Search from "./pages/Search";
-import Courses from "./pages/Courses";
 import OnlineStudy from "./pages/OnlineStudy";
 import Profile from "./pages/Profile";
 import MyOnline from "./pages/MyOnline";
@@ -31,6 +28,7 @@ import UpdateUserInfo from './pages/UpdateUserInfo';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import KakaoCallback from "./components/KakaoCallback";
+import Certificates from "./pages/Certificates";
 
 const Layout = () => {
   
@@ -53,24 +51,12 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: "/post/:id",
-        element: <Single />
-      },
-      {
-        path: "/write",
-        element: <Write />
-      },
-      {
         path: "/lecturedetail/:lectureID",
         element:<LectureDetail/>
       },
       {
         path: "/search/:searchcategory",
         element: <Search />
-      },
-      {
-        path: "/courses",
-        element: <Courses />
       },
       {
         path: "/profile",
@@ -99,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />
+      },
+      {
+        path: "/certificates",
+        element: <Certificates/>
       },
       {
         path: "/login",

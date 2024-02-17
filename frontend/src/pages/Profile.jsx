@@ -5,10 +5,9 @@
  * Description : User Info
  */
 import React, {useEffect, useState, useContext} from 'react';
-import { Link } from 'react-router-dom';
 import { AuthContext} from '../context/AuthContext';
 import defaultimage from '../img/DefaultImage.png';
-
+import Infonav from '../components/Infonav';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const Profile = () => {
@@ -55,20 +54,12 @@ const Profile = () => {
 
     return (
         <div className='myinfo'>
-            <div className='infonav'>
-                <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
-                    <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>
-                    <li><Link className= 'link' to={'/updateUserinfo'}>내 정보 수정</Link></li>
-                    <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>
-                    <li><Link className= 'link' to={'/Cart'}>찜 목록</Link></li>
-                    <li><Link className= 'link' to={'/paymentlist'}>결제 내역</Link></li>
-                </ul>            
-            </div>
-
+            
+        <Infonav/>
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     <div className='userinfo'>
-                        <img style={{ margin: '30px', width: '100px' }} 
+                        <img style={{ margin: '30px', width: '100px', borderRadius:'10px' }} 
                         src={userInfo.UserImage != null ? `http://localhost:4000/${userInfo.UserImage}` : defaultimage} />
                         <div style={{ marginLeft: '200px', marginTop: '30px' }}>
                             <table>

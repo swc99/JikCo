@@ -5,9 +5,10 @@
  * Description : Lectrue list 
  */
 import React, {useState, useEffect, useContext} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import Infonav from '../components/Infonav';
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -31,7 +32,7 @@ const Cart = () => {
                 }
             })
             .catch((error) => {
-                console.error('강의 정보를 가져오는데 실패했습니다.', error);
+                console.log('강의 정보를 가져오는데 실패했습니다.', error);
             });
     }, []);
 
@@ -83,22 +84,14 @@ const Cart = () => {
 
     return (
         <div className='myinfo'>
-            <div className='infonav'>
-                <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
-                    <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>
-                    <li><Link className= 'link' to={'/updateUserinfo'}>내 정보 수정</Link></li>
-                    <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>
-                    <li><Link className= 'link' to={'/Cart'}>찜 목록</Link></li>
-                    <li><Link className= 'link' to={'/paymentlist'}>결제 내역</Link></li>
-                </ul>
-            </div>
+            <Infonav/>
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
-                <div style={{display:'flex',justifyItems:'auto',padding:'5%'}}>
+                <div style={{display:'flex',justifyItems:'auto',padding:'3%'}}>
                     {nullMessage}
                     {nonStudyLectures && nonStudyLectures.map((lecture) => (
-                            <div key={lecture.TITLE} style={{ marginLeft: '20px' }}>
-                                <img style={{height:'80px', width:'100px'}} src={lecture.LECTUREIMAGE}/>
+                            <div key={lecture.TITLE} style={{ margin:'5px', boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)', borderRadius:'10px',padding:'4px'}}>
+                                <img style={{height:'80px', width:'120px'}} src={lecture.LECTUREIMAGE} alt=''/>
                                 <p style={{width:'120px'}}>{lecture.TITLE}</p>
                                 <p>가격: {lecture.LECTUREPAY}</p>
                                 <input
@@ -115,7 +108,7 @@ const Cart = () => {
                                         }
                                     }}
                                 />
-                                <button style={{marginLeft:'50%'}} onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
+                                <button style={{marginLeft:'60%'}} onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
                             </div>
                         ))}
                     </div>

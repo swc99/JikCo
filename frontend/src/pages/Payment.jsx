@@ -106,7 +106,7 @@ const Payment = () => {
                 paymentData.push({
                     LectureID: lecture.LectureID,
                     Pay: lecture.LECTUREPAY + (lecture.hasBook ? lecture.Book : 0),
-                    // 다른 필요한 정보들도 추가할 수 있음
+                    HasBook: lecture.hasBook
                 });
             }
         }
@@ -135,6 +135,7 @@ const Payment = () => {
                             Address: formData.address,
                             Name: formData.name,
                             Email: formData.email,
+                            HasBook: lecturePayment.HasBook
                         });
                         if (res.data.success) {
                             console.log(res.data.message);

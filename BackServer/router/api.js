@@ -529,5 +529,11 @@ router.post('/imageChange', upload.single('image'), (req, res, next) => {
         
     });
 });
+router.post('/images',(req, res)=>{
+    var imgName = req.body.fileName;
+    console.log('이미지 요청: ' + imgName);
+    res.sendFile(path.join(__dirname, '../','public','images', imgName));
+    
+});
 
 module.exports = router;

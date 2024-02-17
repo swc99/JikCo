@@ -8,12 +8,15 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import defaultimage from '../img/DefaultImage.png';
+import moment from 'moment';
+
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const ReviewForm = ({ handleStarClick, selectedStars, onSubmit }) => {
     return (
       <div>
-        <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={onSubmit}>
+        <form style={{ display: 'flex', flexDirection: 'column',marginBottom:'300px' }} onSubmit={onSubmit}>
           <p>점수: {selectedStars} 점</p>
           <div>
             {[1, 2, 3, 4, 5].map((star) => (
@@ -29,8 +32,7 @@ const ReviewForm = ({ handleStarClick, selectedStars, onSubmit }) => {
           <input style={{ width: '300px' }} type='text' name='title' />
   
           <label>내용</label>
-          <textarea style={{ width: '300px', height: '300px' }} name='content' />
-  
+          <textarea style={{ width: '300px', height: '200px' }} name='content' />
           <button type='submit' style={{ marginTop: '10px', width: '80px' }}>
             리뷰 작성
           </button>
@@ -77,7 +79,9 @@ const LectureDetail = ()=>{
 
       const handlesideButtonClick = async() =>{
         if(currentUser && currentUser.length > 0 && currentUser[0].UserID != null){
-            const res = await axios.post(`${serverUrl}/lectureDetail/enrollment`,{LectureID: `${lectureID}`,UserID:`${currentUser[0].UserID}` })
+            const res = await axios.post(`${serverUrl}/lectureDetail/enrollment`,{
+              LectureID: `${lectureID}`,UserID:`${currentUser[0].UserID}` 
+            });
             const data = res.data;
             console.log('수강하기 클릭 결과',data);
             if(data.success){
@@ -132,7 +136,6 @@ const LectureDetail = ()=>{
         try {
           // 서버로 POST 요청 보내기
           const response = await axios.post(`${serverUrl}/lectureDetail/board_upload`, reviewData);
-      
           if (response.data.success) {
             console.log('리뷰 저장 성공');
             window.location.reload();
@@ -150,9 +153,7 @@ const LectureDetail = ()=>{
     return(
         <div className='app'>
             <div style={{width:'1024px'}}>
-                <button type='button' onClick={handlesideButtonClick} 
-                  style={{marginLeft:'92%',height:'10px' , border:'none', backgroundColor:'transparent'}}>
-                  찜하기</button>
+                
                 <div className='lectureDetail'>
                     <div className='lectureImage'>
                         <img style={{width:'auto',height:'500px'}} src={lectureInfo.LectureImage}/>
@@ -190,15 +191,20 @@ const LectureDetail = ()=>{
                         </div>
                     </div>
                 </div>
-                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: 'none', padding: '10px', height: '5%'}}>
+                <div id='review' style={{ maxHeight: '400px', overflowY: 'auto', border: 'none', padding: '10px', height: '20%'}}>
                 {board.length != 0 ? board.map((boardlist)=>{
                     return(
-                    <div key={boardlist.ID}>
+                    <div key={boardlist.review_time}>
+                        <img style={{width:'50px',height:'10%', borderRadius:'100%', boxShadow:'0px 0px 15px  rgba(0, 0, 0, 0.3)'}} 
+                        src={boardlist.USERIMAGE != null ? `http://localhost:4000/${boardlist.USERIMAGE}` : defaultimage} />
                         <p>
-                        익명 {renderStars(boardlist.Score)}<br/>
+                        {renderStars(boardlist.Score)}<br/>
                         {boardlist.Title}<br/>
-                        {boardlist.Content}
+                        {boardlist.Content}<br/>
                         </p>
+                        <h5 style={{marginTop:'0px',display:'flex', flexDirection:'row'}}>
+                        {new Date(boardlist.review_time).toLocaleDateString()}-{moment.utc(boardlist.review_time).fromNow()}
+                        </h5>
                     </div>
                     );
                 }) : <div><h4>작성된 리뷰가 없습니다.</h4></div>}

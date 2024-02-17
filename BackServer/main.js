@@ -13,6 +13,7 @@ const api = require('./router/api')
 const cors = require('cors');
 const dotenv = require('dotenv');
 const cookieparser = require('cookie-parser');
+const path = require('path');
 
 const corsOptions = {
     origin: 'http://localhost:3000', // 클라이언트의 주소로 변경
@@ -21,13 +22,8 @@ const corsOptions = {
 const app = express();
 dotenv.config();
 
-
 app.use(express.static('public'));
-app.use('/images/:imageName', function(req, res){
-  var imgName = req.params.imageName;
-  console.log('이미지 요청: ' + imgName);
-  res.sendFile(path.join(__dirname, 'public', imgName));
-});
+
 app.use(cors(corsOptions));
 app.use(cookieparser());
 app.use(bodyParser.json());

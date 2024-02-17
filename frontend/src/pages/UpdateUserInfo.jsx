@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import defaultimage from '../img/DefaultImage.png';
+import Infonav from '../components/Infonav';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
 const UpdateUserInfo = () => {
@@ -106,15 +107,7 @@ const UpdateUserInfo = () => {
     }
     return (
         <div className='myinfo'>
-            <div className='infonav'>
-                <ul style={{backgroundColor:'#fff', borderRadius:'10px'}}>
-                    <li><Link className= 'link' to={'/profile'}>내 정보</Link></li>
-                    <li><Link className= 'link' to={'/updateUserinfo'}>내 정보 수정</Link></li>
-                    <li><Link className= 'link' to={'/myonline'}>수강 내역</Link></li>
-                    <li><Link className= 'link' to={'/Cart'}>찜 목록</Link></li>
-                    <li><Link className= 'link' to={'/paymentlist'}>결제 내역</Link></li>
-                </ul>            
-            </div>
+                                            <Infonav/>
             <div className='infoview' style={{padding:'10px'}}>
                 <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     <form onSubmit={handleSubmit}>
