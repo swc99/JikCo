@@ -86,35 +86,46 @@ const Cart = () => {
         <div className='myinfo'>
             <Infonav/>
             <div className='infoview' style={{padding:'10px'}}>
-                <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
-                <div style={{display:'flex',justifyItems:'auto',padding:'3%'}}>
-                    {nullMessage}
-                    {nonStudyLectures && nonStudyLectures.map((lecture) => (
-                            <div key={lecture.TITLE} style={{ margin:'5px', boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)', borderRadius:'10px',padding:'4px'}}>
+                <div style={{backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px',
+                display:'grid', gridAutoRows:'350px 50px',gridGap:'18%'
+                }}>
+                    <div style={{display:'flex', flexDirection:'row',
+                    justifyItems:'auto',padding:'3%',maxWidth: '700px', overflowX: 'auto'}}>
+                        {nullMessage}
+                        {nonStudyLectures && nonStudyLectures.map((lecture) => (
+                            <div key={lecture.TITLE} 
+                            style={{ margin:'5px', boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
+                             borderRadius:'10px',padding:'4px', display:'grid',
+                             gridAutoRows:'80px 120px 30px 30px', gridRowGap: '8px'}}>
+                                
                                 <img style={{height:'80px', width:'120px'}} src={lecture.LECTUREIMAGE} alt=''/>
                                 <p style={{width:'120px'}}>{lecture.TITLE}</p>
                                 <p>가격: {lecture.LECTUREPAY}</p>
-                                <input
-                                    type='checkbox'
-                                    name='구매'
-                                    checked={selectedCourses.includes(lecture.TITLE)}
-                                    onChange={() => {
-                                        if (selectedCourses.includes(lecture.TITLE)) {
-                                            // 이미 선택된 경우, 해당 항목을 배열에서 제거
-                                            setSelectedCourses(selectedCourses.filter(course => course !== lecture.TITLE));
-                                        } else {
-                                            // 선택되지 않은 경우, 해당 항목을 배열에 추가
-                                            setSelectedCourses([...selectedCourses, lecture.TITLE]);
-                                        }
-                                    }}
-                                />
-                                <button style={{marginLeft:'60%'}} onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
+                                <div style={{marginTop:'auto'}}>
+                                    <input
+                                        type='checkbox'
+                                        name='구매'
+                                        checked={selectedCourses.includes(lecture.TITLE)}
+                                        onChange={() => {
+                                            if (selectedCourses.includes(lecture.TITLE)) {
+                                                // 이미 선택된 경우, 해당 항목을 배열에서 제거
+                                                setSelectedCourses(selectedCourses.filter(course => course !== lecture.TITLE));
+                                            } else {
+                                                // 선택되지 않은 경우, 해당 항목을 배열에 추가
+                                                setSelectedCourses([...selectedCourses, lecture.TITLE]);
+                                            }
+                                        }}
+                                    />
+                                    <button className='deleteBTN' onClick={(e) =>handleDrop(lecture.LectureID)}>x</button>
+                                </div>
                             </div>
                         ))}
                     </div>
                     <div className='pay'>
                         <p style={{marginRight:'3%'}}>총 합계: {totalAmount}</p>
-                        <button onClick={handlePayment}>결제 하기</button>
+                        <button className='payBTN'
+                        
+                         onClick={handlePayment}>결제 하기</button>
                     </div>
                 </div>
             </div>

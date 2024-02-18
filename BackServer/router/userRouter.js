@@ -13,7 +13,7 @@ const Jimp = require('jimp');
 const path = require('path');
 const iconv = require('iconv-lite');
 const fs = require('fs'); // fs 모듈 추가
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage, registerFont } = require('canvas');
 router.use(bodyParser.json());
 
 //유저 정보 조회
@@ -223,18 +223,23 @@ router.post('/certificates', async (req, res) => {
     const ctx = canvas.getContext('2d');
 
     // 배경 이미지 로드 및 캔버스에 그리기
-    const backgroundImage = await loadImage('public/images/certificates.png');
+    const backgroundImage = await loadImage('public/images/certificate.png');
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
     // 폰트 및 텍스트 스타일 설정
-    ctx.font = '30px "KCCeunyoung"'; // 폰트 크기 및 종류 설정
+    const fontPath = 'public/font/tvNEnjoystoriesLight.ttf';
+    console.log('폰트 위치',fontPath);
+    registerFont(path.resolve(__dirname, '../' ,fontPath), { family: 'tvN 즐거운이야기 Light' }); // 글꼴 이름 이랑 같아야하는거 같음
+    ctx.font = '36px "tvN 즐거운이야기 Light"'; // 폰트 크기 및 종류 설정
     ctx.fillStyle = '#000'; // 텍스트 색상 설정
     ctx.textAlign = 'center'; // 텍스트 가운데 정렬
 
     // 텍스트 그리기
-    ctx.fillText(userName, canvas.width / 2, 550);
-    ctx.fillText(lectureTitle, canvas.width / 2, 680);
+    ctx.fillText(lectureTitle, canvas.width / 2, 670);
     ctx.fillText(INSTRUCTORNAME, 600, 770);
+
+    ctx.font = '48px "tvN 즐거운이야기 Light"'; // 폰트 크기 및 종류 설정
+    ctx.fillText(userName, canvas.width / 2, 510);
 
     // 이미지 저장
     const imagePath = `public/images/${userName}${lectureId}.png`;
@@ -242,7 +247,7 @@ router.post('/certificates', async (req, res) => {
     const stream = canvas.createPNGStream();
     stream.pipe(out);
     out.on('finish', async () => {
-        console.log('The PNG file was created.');
+        console.log('수료증 생성 완료.');
 
         // 데이터베이스에 저장
         const image_path = `images/${userName}${lectureId}.png`;
@@ -284,6 +289,7 @@ function checkExistingCertificate(userId, lectureId) {
         });
     });
 }
+
 router.post('/certificatesList',(req,res)=>{
     const userId = req.body.UserID;
     console.log('수료증 리스트 요청',req.body);

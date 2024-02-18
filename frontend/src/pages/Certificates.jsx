@@ -63,7 +63,7 @@ const Certificates = () => {
                 backgroundColor:'#fff',height:'500px',marginTop:'13px' , borderRadius:'10px'}}>
                     {nullMessage}
                     {certificatesList && certificatesList.map((certificates) => (
-                        <div key={certificates.ISSUEDATE} 
+                        <div key={certificates.CERTIFICATEID} 
                         style={{ margin:'5px',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', borderRadius:'5px',
                         boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)' }}>
                             <div style={{ marginLeft: '10px' }}>
