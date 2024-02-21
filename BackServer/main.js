@@ -16,7 +16,7 @@ const cookieparser = require('cookie-parser');
 const path = require('path');
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // 클라이언트의 주소로 변경
+    origin: ['http://localhost:3000','http://localhost'],
     credentials: true,
 };
 const app = express();

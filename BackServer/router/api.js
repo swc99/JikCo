@@ -215,7 +215,7 @@ router.post('/login', (req, res) => {
                         },
                         key,
                         {
-                            expiresIn:"1h",
+                            expiresIn:"10h",
                             issuer:"woo"
                         }
                     );
