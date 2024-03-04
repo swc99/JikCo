@@ -220,9 +220,9 @@ router.post('/login', (req, res) => {
                         }
                     );
                     res.cookie("accesstoken",token,{
-                        httpOnly: true,
-                        sameSite: 'lax', // or 'strict' or 'none' with 'secure' if HTTPS
-                        // secure: true,
+                        httpOnly: false,
+                        sameSite: 'none', // or 'strict' or 'none' with 'secure' if HTTPS
+                        secure: true,
                         maxAge: 36000000
                     });
                     res.status(200).json({

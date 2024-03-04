@@ -47,10 +47,10 @@ const Home = () => {
                     localStorage.setItem('categoryList', JSON.stringify(data.categoryList));
 
                 }else {
-                    console.error('홈 정보를 가져오는데 실패했습니다.');
+                    console.log('홈 정보를 가져오는데 실패했습니다.');
                 }
             } catch (error) {
-                console.error('홈 정보를 가져오는데 실패했습니다.', error);
+                console.log('홈 정보를 가져오는데 실패했습니다.', error);
             }
         };
 

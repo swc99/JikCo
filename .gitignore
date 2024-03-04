@@ -3,3 +3,4 @@ BackServer/DB/
 BackServer/public/
 frontend/src/components
 *.pem
+test.js
