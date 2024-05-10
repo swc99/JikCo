@@ -1,9 +1,9 @@
 /**
  * Author : 성우창
  * Date : 24.01.12
- * Last : 24.02.13
+ * Last : 24.05.04
  * Endpoint : /api
- * Description : code 정리, bcrypt, Token
+ * Description : 
  */
 const db = require('../DB/DBconn');
 const router = require('express').Router();
@@ -529,11 +529,39 @@ router.post('/imageChange', upload.single('image'), (req, res, next) => {
         
     });
 });
+
 router.post('/images',(req, res)=>{
     var imgName = req.body.fileName;
     console.log('이미지 요청: ' + imgName);
     res.sendFile(path.join(__dirname, '../','public','images', imgName));
     
 });
+//ID & Password 찾기
+router.post('/findEmail',(req,res)=>{
+    const email = req.body.email;
+    console.log(email);
+
+    const sql = `SELECT UserEmail FROM USER WHERE USEREMAIL = ?;`
+    const value = [email];
+    db.query(sql,value,(err,result)=>{
+        if(err){
+            console.error(err);
+            return res.status(500).send('Internal Server Error');
+        }
+        if(result.length === 0 ){
+            console.log("유저 조회 실패");
+            res.json({
+                success: false,
+                message: '결과가 없습니다.'
+            });
+        }else{
+            console.log("유저 조회 성공");
+            res.json({
+                success: true,
+                message: '존재하는 사용자 입니다.'
+            });
+        }
+    });
+})
 
 module.exports = router;

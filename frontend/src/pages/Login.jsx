@@ -117,6 +117,10 @@ const Login = () => {
                     <span>회원가입</span>
                 </button>
                 </Link>
+                <Link className='link' to={'/findPassword'}
+                style={{marginLeft:'auto',marginRight:'auto'}}>
+                        <span>아이디/비밀번호 찾기</span>
+                </Link>
             </form>
         </div>
     );

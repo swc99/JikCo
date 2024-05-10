@@ -12,7 +12,7 @@ body {
   height: auto;
   
   .container {
-    width: 1024px;
+    width: auto;
     margin: 0px auto; // 위 아래 마진 추가
     background-color: white;
     border-radius: 10px;
@@ -448,7 +448,7 @@ body {
     // HOME
     .homeimg{
       margin-left: 13px;
-      width: 1000px;
+      width: 100%;
     }
     .home {
       .card-container {

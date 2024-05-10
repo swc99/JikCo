@@ -204,9 +204,6 @@ router.post('/board_upload',(req,res)=>{
                     });
                 }
             });
-
-
-            
         }
     })
 });

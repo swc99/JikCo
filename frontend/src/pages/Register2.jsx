@@ -1,15 +1,15 @@
 /**
  * Author : woo
- * Date : 24.01.15
- * Last : 24.01.29
- * Description : Register
+ * Date : 24.05.03
+ * Last : 
+ * Description : Register2
  */
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-const Register = () => {
+const Register2 = () => {
     const nav = useNavigate();
     const [phoneNum, setPhoneNum] = useState(null);
     const [emailduplicate, setEmailduplicate] = useState('이메일 입력');
@@ -66,6 +66,9 @@ const Register = () => {
 
     const handlePasswordCheck = (e) => {
         const password = inputs.insertPassword;
+        if(password === null || password === ""){
+            setPass(' ');
+        }
         // 최소 길이 검사
         if (password.length < 8) {
             setPass('암호는 최소 8자 이상이어야 합니다.');
@@ -158,19 +161,18 @@ const Register = () => {
                     {pass}
                 </h6>
                 <button type="button" onClick={handlePasswordCheck}>암호 확인</button>
-
                 <h6 style={{ color: 'red', marginTop:'5px', marginBottom:'5px' }}>3개 선택</h6>
                 <div className='categoryList'>
-                    {categorylist.map((category) => (
-                        <label key={category.categoryId}>
-                            <input
-                                type='checkbox'
-                                checked={inputs.selectedCategories.includes(category.categoryId)}
-                                onChange={() => handleCheckboxChange(category.categoryId)}
-                            />
-                            {category.categoryName}
-                        </label>
-                    ))}
+                {categorylist.map((category) => (
+                    <label key={category.categoryId}>
+                        <input
+                            type='checkbox'
+                            checked={inputs.selectedCategories.includes(category.categoryId)}
+                            onChange={() => handleCheckboxChange(category.categoryId)}
+                        />
+                        {category.categoryName}
+                    </label>
+                ))}
                 </div>
                 <button type='button' onClick={nullCheck}>작성 확인</button>
                 <button type='button' onClick={handleRegistration}>가입 요청</button>
@@ -180,4 +182,4 @@ const Register = () => {
     );
 }
 
-export default Register;
+export default Register2;

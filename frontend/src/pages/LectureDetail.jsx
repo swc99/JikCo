@@ -210,11 +210,11 @@ const LectureDetail = ()=>{
                 }) : <div><h4>작성된 리뷰가 없습니다.</h4></div>}
                 </div>
                 <div>
-                <ReviewForm
-                    handleStarClick={handleReviewStarClick}
-                    selectedStars={selectedStars}
-                    onSubmit={handleReviewSubmit}
-                />
+                  <ReviewForm
+                      handleStarClick={handleReviewStarClick}
+                      selectedStars={selectedStars}
+                      onSubmit={handleReviewSubmit}
+                  />
                 </div>
                 
             </div>

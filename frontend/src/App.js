@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 
 import Register from "./pages/Register";
+import Register2 from "./pages/Register2";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
@@ -29,6 +30,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import KakaoCallback from "./components/KakaoCallback";
 import Certificates from "./pages/Certificates";
+import FindPassword from "./pages/FindPassword";
 
 const Layout = () => {
   
@@ -87,12 +89,20 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
+        path: "/register2",
+        element: <Register2 />
+      },
+      {
         path: "/certificates",
-        element: <Certificates/>
+        element: <Certificates />
       },
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path: "/findpassword",
+        element: <FindPassword />
       },
       {
         path: "/onlinestudy/:lectureID",
@@ -100,7 +110,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/kakaoCallback",
-        element: <KakaoCallback/>
+        element: <KakaoCallback />
       },
     ]
   },
