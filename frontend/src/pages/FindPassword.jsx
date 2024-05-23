@@ -1,8 +1,8 @@
 /**
  * Author : woo
  * Date : 24.05.01
- * Last : 
- * Description : For Find Password
+ * Last : 24.05.12
+ * Description : Find Password
  */
 import React, { useState, useContext } from 'react';
 // import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const FindPassword = () => {
             setPassword((prev) => ({...prev,[e.target.name] : e.target.value}));
         }
     };
-
+    //이메일 확인
     const checkEmail = async() => {
         if (inputEmail.trim().length === 0) {
             alert("이메일(아이디)을 입력해주세요");
@@ -43,6 +43,7 @@ const FindPassword = () => {
             alert(`${res.data.message}`);
         }    
     }
+    //인증코드 전송
     const sendCode = () => {
         if(emailState){
             setSendState(true);
@@ -52,6 +53,9 @@ const FindPassword = () => {
         }
     }
 
+    //인증 코드 확인
+
+    //암호 일치 확인
     const updatePassword = () => {
         console.log(inputPassword.firstPassword);
         console.log(inputPassword.secondPassword);
@@ -71,7 +75,8 @@ const FindPassword = () => {
                 
                 <label>인증 코드 입력</label>
                 <input type='text'/>
-                <button type='button' onClick={sendCode}>인증 코드 받기</button>
+                {sendState ? <button type='button' onClick={sendCode}>코드 확인</button> : <button type='button' onClick={sendCode}>인증 코드 받기</button>}
+                
                 <label>새 비밀번호</label>
                 <input type='password' placeholder='password' name='firstPassword' value={inputPassword.firstPassword} onChange={handleChange}/>
                 <input type='password' placeholder='password' name='secondPassword' value={inputPassword.secondPassword} onChange={handleChange}/>

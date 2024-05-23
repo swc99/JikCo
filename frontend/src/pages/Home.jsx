@@ -1,12 +1,14 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.01.29
- * Description : Main Home
+ * Last : 24.05.23
+ * Description : Main Home Page
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import homeimg from '../img/Jikcoimg.jpg';
+import homeimg2 from '../img/lake-7624330_1280.jpg';
+import homeimg3 from '../img/snake-7716269_1280.jpg';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -22,6 +24,19 @@ const Home = () => {
     const handleSubmit = (lecturID) => {
         nav(`/lectureDetail/${lecturID}`);
     };
+
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const homeImages = [
+        homeimg,
+        homeimg2,
+        homeimg3
+    ];
+
+    const [ImageChanger, setCurrentImage] = useState([
+        homeimg,
+        homeimg2,
+        homeimg3
+    ]);
 
     console.log('home ',lecturelistHome);
 
@@ -55,7 +70,24 @@ const Home = () => {
         };
 
         fetchData();
+
+        const interval = setInterval(() => {
+                    // 이미지 인덱스를 변경하여 다음 이미지를 보여줍니다.
+                    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % homeImages.length);
+                }, 5000);
+        
+        return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval 정리
     }, [currentUser]);
+    // 5초마다 이미지 변경
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         // 이미지 인덱스를 변경하여 다음 이미지를 보여줍니다.
+    //         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % homeImages.length);
+    //     }, 5000);
+
+    //     return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 interval 정리
+    // }, []); // 빈 배열을 전달하여 최초 렌더링 시에만 실행되도록 설정
+  
     const renderStars = (score) => {
         const maxStars = 5;
         const filledStars = Math.round(score); // 반올림하여 꽉 찬 별 갯수 계산
@@ -74,7 +106,8 @@ const Home = () => {
     const maxLength = 50; // 원하는 최대 길이
     return (
         <div className='frhome' style={{marginTop:'10px', width:'1024px'}}>
-            <img className='homeimg' src={homeimg} alt="Homepage" />
+            {/* <img className='homeimg' src={homeimg} alt="Homepage" /> */}
+            <img className='homeimg' src={homeImages[currentImageIndex]} alt="Homepage" />
             <h6 style={{marginLeft: '14px'}}>사진 출처 : 에듀퓨어</h6>
 
             <div className="home">
