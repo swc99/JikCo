@@ -19,11 +19,14 @@ const FindPassword = () => {
             secondPassword : ""
         }
     );
+    const [checkCode, setCheckCode] = useState("");
     const [emailState, setEmailState] = useState(false);
     const [sendState, setSendState] = useState(false);
     const handleChange = (e) => {
         if(e.target.name === 'inputEmail'){
             setEmail(e.target.value);
+        }else if(e.target.name === 'checkCode'){
+            setCheckCode(e.target.value);
         }else{
             setPassword((prev) => ({...prev,[e.target.name] : e.target.value}));
         }
@@ -52,6 +55,13 @@ const FindPassword = () => {
             alert("이메일확인 부터 진행 해야 합니다.");
         }
     }
+    const codeCheck = () => {
+        if(checkCode === '1234'){
+            alert('코드 일치');
+        }else{
+            alert('코드가 일치하지 않습니다.');
+        }
+    }
 
     //인증 코드 확인
 
@@ -74,13 +84,15 @@ const FindPassword = () => {
                 <button type='button' onClick={checkEmail}>Email 확인</button>
                 
                 <label>인증 코드 입력</label>
-                <input type='text'/>
-                {sendState ? <button type='button' onClick={sendCode}>코드 확인</button> : <button type='button' onClick={sendCode}>인증 코드 받기</button>}
+                <input type='text'placeholder='인증코드 4자리' name='checkCode' value={checkCode} onChange={handleChange}/>
+                {sendState ? <button type='button' onClick={codeCheck}>코드 확인</button> 
+                : <button type='button' onClick={sendCode}>인증 코드 받기</button>}
                 
                 <label>새 비밀번호</label>
                 <input type='password' placeholder='password' name='firstPassword' value={inputPassword.firstPassword} onChange={handleChange}/>
                 <input type='password' placeholder='password' name='secondPassword' value={inputPassword.secondPassword} onChange={handleChange}/>
-                { inputPassword.firstPassword === null || inputPassword.firstPassword === "" ? null : (inputPassword.firstPassword === inputPassword.secondPassword ? <h6 style={{color:'blue'}}> 비밀번호가 일치 합니다.</h6>
+                { inputPassword.firstPassword === null || inputPassword.firstPassword === "" ? null : 
+                (inputPassword.firstPassword === inputPassword.secondPassword ? <h6 style={{color:'blue'}}> 비밀번호가 일치 합니다.</h6>
                 : <h6 style={{color:'red'}}>비밀번호가 일치하지 않습니다.</h6>)}
                 <button type='button' onClick={updatePassword}>비밀 번호 변경하기</button>
             </form>

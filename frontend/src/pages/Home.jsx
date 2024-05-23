@@ -33,14 +33,6 @@ const Home = () => {
         homeimg3
     ];
 
-    const [ImageChanger, setCurrentImage] = useState([
-        homeimg,
-        homeimg2,
-        homeimg3
-    ]);
-
-    console.log('home ',lecturelistHome);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
