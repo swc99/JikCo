@@ -41,7 +41,7 @@ const PaymentList = () => {
 
     return (
         <div className='myinfo'>
-                                <Infonav/>
+            <Infonav/>
             <br/>
             <div className='infoview' style={{padding:'10px'}}>
                 <div  style={{display:'flex', flexDirection:'column', maxHeight: '600px', overflowY: 'auto', 
