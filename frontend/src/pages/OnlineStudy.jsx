@@ -108,7 +108,7 @@ const OnlineStudy = () => {
       
         <div className="sidebar" style={{marginRight:'auto'}}>
           <button className="toggle-button" onClick={toggleSidebar}>
-            {isSidebarOpen ? '접기' : '펼치기'}
+            {isSidebarOpen ? '접기' : '목차 열기'}
           </button>
           {isSidebarOpen && (
           <div className="sidebar-content" style={{maxHeight: '600px', overflowY: 'auto'}}>

@@ -38,10 +38,15 @@ const VideoPlayer = ({ src, tocId,lectureID }) => {
     setCurrentTime(0);
   };
   
+  const soundControll = (e) => {
+    const volume = e.target.value;
+    if(videoRef.current){
+      videoRef.current.volume = volume;
+    }
+  }
   useEffect(() => {
-    
-    console.log(src);
-    console.log(tocId);
+    // console.log(src);
+    // console.log(tocId);
     setCurrentTime(0);
     const video = videoRef.current;
     let playIntervalId;
@@ -63,7 +68,7 @@ const VideoPlayer = ({ src, tocId,lectureID }) => {
         LectureID: lectureID,
         Progress: currentTime
       });
-      console.log('woo', res.data);
+      // console.log('woo', res.data);
       if (res.data.success) {
         console.log(res.data.message);
       } else {
@@ -125,6 +130,7 @@ const VideoPlayer = ({ src, tocId,lectureID }) => {
         <button className="control-button" onClick={restartVideo}>
           ReStart
         </button>
+        <input id='volume' type='range' min='0' max='1' step='0.01' onChange={soundControll}/>
       </div>
 
       <div >
