@@ -1,7 +1,7 @@
 /**
  * Author : woo
  * Date : 24.01.15
- * Last : 24.02.16
+ * Last : 24.06.07
  * Description : Lectrue Detail
  */
 import React, { useState, useEffect, useContext } from 'react'
@@ -151,20 +151,22 @@ const LectureDetail = ()=>{
       };
       
     return(
-        <div className='app'>
+        <div>
+          <div className='contentinner'>
+              <button type='button' onClick={() => handleButtonClick('inslecture')}>강의 소개</button>
+              <button type='button' onClick={() => handleButtonClick('insInstrutor')}>강사 소개</button>
+              <button type='button' onClick={() => handleButtonClick('insToc')}>목차 소개</button>
+              <button type='button' onClick={() => handleButtonClick('review')}>리뷰</button>
+          </div>
             <div style={{width:'1024px'}}>
                 
                 <div className='lectureDetail'>
                     <div className='lectureImage'>
                         <img style={{width:'auto',height:'500px'}} src={lectureInfo.LectureImage}/>
                     </div>
+                    
                     <div className='lectureContent'>
-                        <div className='contentinner'>
-                            <button type='button' onClick={() => handleButtonClick('inslecture')}>강의 소개</button>
-                            <button type='button' onClick={() => handleButtonClick('insInstrutor')}>강사 소개</button>
-                            <button type='button' onClick={() => handleButtonClick('insToc')}>목차 소개</button>
-                            <button type='button' onClick={() => handleButtonClick('review')}>리뷰</button>
-                        </div>
+                        
                         <div>
                           <h3>{lectureInfo.Title}</h3>
                         </div>

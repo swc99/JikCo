@@ -54,6 +54,7 @@ const Navbar = () => {
   }, [location.pathname]);
 
   return (
+    
     <div className="navbar">
       <div className="container" style={{ height: '100px',borderBottom: '5px solid #007bff'}}>
         <div className="logo">

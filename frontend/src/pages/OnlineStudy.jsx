@@ -22,7 +22,7 @@ const StudyInfo = ({selectedTOC,lectureId}) =>{
     );
   }
   return (
-      <div className="main-content" style={{marginRight:'150px' ,width:'80%'}}>
+      <div className="main-content" style={{marginRight:'150px' ,width:'90%'}}>
         <div className="video-container">
         <h2>{selectedTOC.TITLE}</h2>
           <VideoPlayer tocId = {selectedTOC.TOCID} lectureID={lectureId} src={`http://localhost:4000/${selectedTOC.MaterialURL}`}/>

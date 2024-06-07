@@ -159,7 +159,7 @@ body {
    
     // LOGIN & REGISTER 
     .auth {
-      width: 1024px;
+      width: 984px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -169,6 +169,8 @@ body {
       margin-top: 10px;
       padding: 20px; // 패딩 추가
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); // 그림자 추가
+      border-radius: 8px;
+      min-height: 700px;
     
       .categoryList {
         display: grid;
@@ -267,9 +269,6 @@ body {
          -moz-transform:scale(1,1);
          -ms-transform:scale(1,1);
        }
-        
-        
-
         p {
           font-size: 12px;
           color: red;
@@ -278,7 +277,6 @@ body {
         span {
           font-size: 12px;
           text-align: center;
-
         }
         .frtable {
           margin-left: 10%;
@@ -287,11 +285,7 @@ body {
           height: 15px;
           width: 50px;
         }
-        
-        
       }
-      
-      
     }
 
     // NAVBAR 
@@ -453,6 +447,47 @@ body {
       margin-left: 13px;
       width: 100%;
       height: 500px;
+    }
+    .slider {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+    }
+  
+    .slides {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+    }
+  
+    .slide {
+      width: 100%;
+      transition: transform 0.5s ease;
+    }
+  
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      margin-top: -55px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+    }
+  
+    .next {
+      right: 23%;
+      border-radius: 3px 0 0 3px;
+    }
+  
+    .prev:hover, .next:hover {
+      background-color: rgba(0,0,0,0.8);
+      border-radius: 40%;
     }
     .home {
       .card-container {
@@ -621,13 +656,31 @@ body {
         background-color: #fff;
         padding: 10px;
         border-radius: 10px;
-        .contentinner{
-          margin: 10px;
-          padding: 10px;
-          button{
-            margin-left: 10px;
-          }
-        }
+        
+      }
+    }
+    .contentinner{
+      background-color: #fff;
+      border-radius: 10px; 
+      border: 2px solid #007bff; 
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+      padding: 10px; /* 내부 여백을 늘립니다. */
+      width: 100px;
+      height: 150px;
+      position: fixed;
+      top: 20%;
+      left: 15%;
+      button{
+        width: 80px;
+        margin-left: 13px;
+        margin-top: 10px;
+        background-color: #007bff; 
+        border: none; 
+        border-radius: 10px; 
+        color: white; 
+        padding: 5px 10px; 
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        cursor: pointer; 
       }
     }
     .lectureside{
@@ -640,7 +693,7 @@ body {
       height: 150px;
       position: fixed;
       top: 20%;
-      right: 1%;
+      right: 10%;
       button {
         width: 80px;
         margin-left: 13px;

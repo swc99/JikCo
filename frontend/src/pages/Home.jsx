@@ -33,6 +33,14 @@ const Home = () => {
         homeimg3
     ];
 
+    const nextSlide = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % homeImages.length);
+    }
+    const prevSlide = ()  => {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + homeImages.length) % homeImages.length);
+        // index가 음수가 되는 경우 방지를 위해 전체 길이를 더해줌
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -101,6 +109,8 @@ const Home = () => {
         <div className='frhome' style={{marginTop:'10px', width:'1024px'}}>
             {/* <img className='homeimg' src={homeimg} alt="Homepage" /> */}
             <img className='homeimg' src={homeImages[currentImageIndex]} alt="Homepage" />
+            <a className="prev" onClick={prevSlide}>&#10094;</a>
+            <a className="next" onClick={nextSlide}>&#10095;</a>
             <h6 style={{marginLeft: '14px'}}>사진 출처 : 에듀퓨어</h6>
 
             <div className="home">
